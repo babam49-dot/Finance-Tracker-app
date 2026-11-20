@@ -2,6 +2,7 @@ package com.example.ethfinance.presentation.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.ethfinance.data.sms.SmsInboxReader
 import com.example.ethfinance.domain.model.CashFlow
 import com.example.ethfinance.domain.model.OverviewSummary
 import com.example.ethfinance.domain.repository.SettingsRepository
@@ -40,7 +41,8 @@ sealed interface HomeUiEvent {
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val getOverviewUseCase: GetOverviewUseCase,
-    private val settingsRepository: SettingsRepository
+    private val settingsRepository: SettingsRepository,
+    private val smsInboxReader: SmsInboxReader
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(HomeUiState())
@@ -64,8 +66,7 @@ class HomeViewModel @Inject constructor(
             HomeUiEvent.SyncNow -> {
                 viewModelScope.launch {
                     _uiState.update { it.copy(isSyncing = true) }
-                    // Simulating sync completion
-                    kotlinx.coroutines.delay(1200)
+                    smsInboxReader.importInbox()
                     _uiState.update { it.copy(isSyncing = false) }
                 }
             }

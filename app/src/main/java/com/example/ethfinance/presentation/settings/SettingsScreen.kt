@@ -1,5 +1,9 @@
 package com.example.ethfinance.presentation.settings
 
+import android.Manifest
+import android.content.pm.PackageManager
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,9 +22,9 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.RadioButton
@@ -37,10 +41,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
 import com.example.ethfinance.R
 import com.example.ethfinance.core.designsystem.LocalExtendedColors
 
@@ -51,6 +57,13 @@ fun SettingsScreen(
 ) {
     val state by viewModel.uiState.collectAsState()
     val extendedColors = LocalExtendedColors.current
+    val context = LocalContext.current
+
+    val permissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestMultiplePermissions()
+    ) {
+        viewModel.onEvent(SettingsUiEvent.ConfirmSwitchMode)
+    }
 
     if (state.showModeDialog) {
         val targetMode = if (state.mode == "DEMO") "Live SMS Mode" else "Demo Mode"
@@ -60,7 +73,7 @@ fun SettingsScreen(
             text = {
                 Text(
                     if (state.mode == "DEMO") {
-                        "Switching to Live Mode will clear sample data and begin tracking your real bank messages on this phone. Real data is never deleted when switching."
+                        "Switching to Live Mode will request SMS permissions to read and import your bank messages (CBE & Telebirr) directly from your phone inbox. Your data stays 100% on this phone."
                     } else {
                         "Switching to Demo Mode will display realistic sample data. Your real imported transactions will remain safely stored."
                     }
@@ -68,7 +81,20 @@ fun SettingsScreen(
             },
             confirmButton = {
                 Button(
-                    onClick = { viewModel.onEvent(SettingsUiEvent.ConfirmSwitchMode) },
+                    onClick = {
+                        if (state.mode == "DEMO") {
+                            val hasPerm = ContextCompat.checkSelfPermission(context, Manifest.permission.READ_SMS) == PackageManager.PERMISSION_GRANTED
+                            if (hasPerm) {
+                                viewModel.onEvent(SettingsUiEvent.ConfirmSwitchMode)
+                            } else {
+                                permissionLauncher.launch(
+                                    arrayOf(Manifest.permission.READ_SMS, Manifest.permission.RECEIVE_SMS)
+                                )
+                            }
+                        } else {
+                            viewModel.onEvent(SettingsUiEvent.ConfirmSwitchMode)
+                        }
+                    },
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
                 ) {
                     Text("Confirm")
@@ -199,7 +225,7 @@ fun SettingsScreen(
                     }
 
                     Spacer(modifier = Modifier.height(14.dp))
-                    Divider(color = extendedColors.divider)
+                    HorizontalDivider(color = extendedColors.divider)
                     Spacer(modifier = Modifier.height(14.dp))
 
                     Text(
@@ -234,7 +260,7 @@ fun SettingsScreen(
                     )
 
                     Spacer(modifier = Modifier.height(10.dp))
-                    Divider(color = extendedColors.divider)
+                    HorizontalDivider(color = extendedColors.divider)
                     Spacer(modifier = Modifier.height(10.dp))
 
                     Row(

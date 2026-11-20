@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.ethfinance.data.sms.SmsInboxReader
 import com.example.ethfinance.domain.repository.SettingsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -41,7 +42,8 @@ sealed interface SettingsUiEvent {
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
-    private val settingsRepository: SettingsRepository
+    private val settingsRepository: SettingsRepository,
+    private val smsInboxReader: SmsInboxReader
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(SettingsUiState())
@@ -113,6 +115,7 @@ class SettingsViewModel @Inject constructor(
                 viewModelScope.launch {
                     if (_uiState.value.mode == "DEMO") {
                         settingsRepository.switchToLiveMode()
+                        smsInboxReader.importInbox()
                     } else {
                         settingsRepository.switchToDemoMode()
                     }

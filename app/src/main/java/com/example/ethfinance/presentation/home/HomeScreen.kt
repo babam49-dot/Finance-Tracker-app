@@ -1,5 +1,9 @@
 package com.example.ethfinance.presentation.home
 
+import android.Manifest
+import android.content.pm.PackageManager
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -38,8 +42,8 @@ import androidx.compose.material.icons.outlined.AssignmentLate
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Divider
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -52,6 +56,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
@@ -59,6 +64,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
 import com.example.ethfinance.R
 import com.example.ethfinance.core.designsystem.LocalExtendedColors
 import com.example.ethfinance.core.util.DateUtils
@@ -77,6 +83,27 @@ fun HomeScreen(
     val state by viewModel.uiState.collectAsState()
     val extendedColors = LocalExtendedColors.current
     val overview = state.overview
+    val context = LocalContext.current
+
+    val permissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        val granted = permissions[Manifest.permission.READ_SMS] == true || permissions[Manifest.permission.RECEIVE_SMS] == true
+        if (granted) {
+            viewModel.onEvent(HomeUiEvent.SyncNow)
+        }
+    }
+
+    val handleSync = {
+        val hasReadSms = ContextCompat.checkSelfPermission(context, Manifest.permission.READ_SMS) == PackageManager.PERMISSION_GRANTED
+        if (hasReadSms) {
+            viewModel.onEvent(HomeUiEvent.SyncNow)
+        } else {
+            permissionLauncher.launch(
+                arrayOf(Manifest.permission.READ_SMS, Manifest.permission.RECEIVE_SMS)
+            )
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -85,7 +112,7 @@ fun HomeScreen(
                 areAmountsHidden = overview.areAmountsHidden,
                 isSyncing = state.isSyncing,
                 onToggleHideAmounts = { viewModel.onEvent(HomeUiEvent.ToggleHideAmounts) },
-                onSyncNow = { viewModel.onEvent(HomeUiEvent.SyncNow) }
+                onSyncNow = handleSync
             )
         },
         floatingActionButton = {
@@ -333,7 +360,7 @@ fun TotalTrackedMoneyCard(
                 fontWeight = FontWeight.Bold
             )
             Spacer(modifier = Modifier.height(14.dp))
-            Divider(color = extendedColors.divider, thickness = 1.dp)
+            HorizontalDivider(color = extendedColors.divider, thickness = 1.dp)
             Spacer(modifier = Modifier.height(14.dp))
 
             Row(
@@ -527,7 +554,7 @@ fun CashFlowCard(
             }
 
             Spacer(modifier = Modifier.height(14.dp))
-            Divider(color = extendedColors.divider, thickness = 1.dp)
+            HorizontalDivider(color = extendedColors.divider, thickness = 1.dp)
             Spacer(modifier = Modifier.height(10.dp))
 
             Text(
