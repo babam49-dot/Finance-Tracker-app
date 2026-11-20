@@ -26,6 +26,7 @@ class NotificationHelper @Inject constructor(
         const val CHANNEL_TRANSACTIONS = "channel_transactions"
         const val CHANNEL_SYNC = "channel_sync"
         private const val NOTIFICATION_SYNC_ID = 1001
+        private const val NOTIFICATION_TEST_ID = 1002
         private const val NOTIFICATION_TX_BASE_ID = 2000
     }
 
@@ -33,18 +34,19 @@ class NotificationHelper @Inject constructor(
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val txChannel = NotificationChannel(
                 CHANNEL_TRANSACTIONS,
-                "Transactions",
+                "Bank & Wallet Transactions",
                 NotificationManager.IMPORTANCE_HIGH
             ).apply {
-                description = "Alerts when a new transaction is parsed from bank SMS"
+                description = "Real-time alerts when new bank or mobile money transactions are received"
+                enableVibration(true)
             }
 
             val syncChannel = NotificationChannel(
                 CHANNEL_SYNC,
-                "Bank Sync",
+                "Auto-Sync & Connection",
                 NotificationManager.IMPORTANCE_DEFAULT
             ).apply {
-                description = "Notifications when bank messages are auto-synced"
+                description = "Notifications when bank messages are auto-synced with CBE & 127"
             }
 
             val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -71,7 +73,8 @@ class NotificationHelper @Inject constructor(
         )
 
         val notification = NotificationCompat.Builder(context, CHANNEL_TRANSACTIONS)
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setSmallIcon(R.drawable.ic_stat_notify)
+            .setColor(0xFF0B6B3A.toInt())
             .setContentTitle(title)
             .setContentText(message)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
@@ -79,7 +82,11 @@ class NotificationHelper @Inject constructor(
             .setAutoCancel(true)
             .build()
 
-        NotificationManagerCompat.from(context).notify((NOTIFICATION_TX_BASE_ID + (txId % 1000)).toInt(), notification)
+        try {
+            NotificationManagerCompat.from(context).notify((NOTIFICATION_TX_BASE_ID + (txId % 1000)).toInt(), notification)
+        } catch (e: SecurityException) {
+            e.printStackTrace()
+        }
     }
 
     fun notifySyncCompleted(importedCount: Int) {
@@ -88,10 +95,12 @@ class NotificationHelper @Inject constructor(
         val message = if (importedCount > 0) {
             "Auto-synced: $importedCount new bank message(s) imported from CBE & Telebirr."
         } else {
-            "Auto-synced: Your bank accounts and balances are up to date."
+            "Auto-sync connected: Checked CBE & Telebirr. All balances are up to date."
         }
 
-        val intent = Intent(context, MainActivity::class.java)
+        val intent = Intent(context, MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        }
         val pendingIntent = PendingIntent.getActivity(
             context,
             0,
@@ -100,7 +109,8 @@ class NotificationHelper @Inject constructor(
         )
 
         val notification = NotificationCompat.Builder(context, CHANNEL_SYNC)
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setSmallIcon(R.drawable.ic_stat_notify)
+            .setColor(0xFF0B6B3A.toInt())
             .setContentTitle("Ethiopian Finance Tracker")
             .setContentText(message)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
@@ -108,10 +118,46 @@ class NotificationHelper @Inject constructor(
             .setAutoCancel(true)
             .build()
 
-        NotificationManagerCompat.from(context).notify(NOTIFICATION_SYNC_ID, notification)
+        try {
+            NotificationManagerCompat.from(context).notify(NOTIFICATION_SYNC_ID, notification)
+        } catch (e: SecurityException) {
+            e.printStackTrace()
+        }
     }
 
-    private fun hasNotificationPermission(): Boolean {
+    fun sendTestNotification(): Boolean {
+        if (!hasNotificationPermission()) return false
+
+        val intent = Intent(context, MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        }
+        val pendingIntent = PendingIntent.getActivity(
+            context,
+            NOTIFICATION_TEST_ID,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+
+        val notification = NotificationCompat.Builder(context, CHANNEL_TRANSACTIONS)
+            .setSmallIcon(R.drawable.ic_stat_notify)
+            .setColor(0xFF0B6B3A.toInt())
+            .setContentTitle("Bank Alert: CBE +1,500.00 ETB")
+            .setContentText("Salary deposit • Current Balance: 12,334.84 ETB")
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setContentIntent(pendingIntent)
+            .setAutoCancel(true)
+            .build()
+
+        try {
+            NotificationManagerCompat.from(context).notify(NOTIFICATION_TEST_ID, notification)
+            return true
+        } catch (e: SecurityException) {
+            e.printStackTrace()
+            return false
+        }
+    }
+
+    fun hasNotificationPermission(): Boolean {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED
         } else {

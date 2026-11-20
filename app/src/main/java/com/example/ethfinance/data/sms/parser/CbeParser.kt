@@ -8,12 +8,20 @@ class CbeParser : BankParser {
 
     override val id: String = "CBE"
 
-    private val accountPattern = Pattern.compile("Account\\s+([\\w*]+)|ሂሳብ\\s+ቁጥር\\s+([\\w*]+)", Pattern.CASE_INSENSITIVE)
-    private val debitPattern = Pattern.compile("(debited\\s+with|ወጪ\\s+ተደርጓል)\\s+(?:ETB|Birr|ብር)?\\s*([\\d,]+(?:\\.\\d{1,2})?)", Pattern.CASE_INSENSITIVE)
-    private val creditPattern = Pattern.compile("(credited\\s+with|ገቢ\\s+ተደርጓል)\\s+(?:ETB|Birr|ብር)?\\s*([\\d,]+(?:\\.\\d{1,2})?)", Pattern.CASE_INSENSITIVE)
-    private val balancePattern = Pattern.compile("(?:Current\\s+Balance|Balance|ቀሪ\\s+ሂሳብ)(?:\\s+is)?\\s+(?:ETB|Birr|ብር)?\\s*([\\d,]+(?:\\.\\d{1,2})?)", Pattern.CASE_INSENSITIVE)
-    private val receiptPattern = Pattern.compile("(?:Receipt|Txn\\s*Id|Ref(?:erence)?):?\\s*([A-Za-z0-9]+)", Pattern.CASE_INSENSITIVE)
-    private val counterpartyPattern = Pattern.compile("(?:from|to|at)\\s+([A-Za-z0-9\\s.&'-]+?)(?:\\.|,|on|\\n|Receipt|$)", Pattern.CASE_INSENSITIVE)
+    private val accountPattern = Pattern.compile("(?:Account|acc(?:ount)?\\s+no|ሂሳብ\\s+ቁጥር)\\s*[:.]?\\s*([\\w*]+)", Pattern.CASE_INSENSITIVE)
+    
+    // Debit patterns (English & Amharic)
+    private val debitPattern = Pattern.compile("(?:debited\\s+with|debited|transferred|withdrawn|paid|ወጪ\\s+ተደርጓል)\\s+(?:ETB|Birr|ብር)?\\s*([\\d,]+(?:\\.\\d{1,2})?)", Pattern.CASE_INSENSITIVE)
+    private val altDebitPattern = Pattern.compile("(?:ETB|Birr|ብር)?\\s*([\\d,]+(?:\\.\\d{1,2})?)\\s*(?:debited\\s+from|ወጪ\\s+ተደርጓል)", Pattern.CASE_INSENSITIVE)
+
+    // Credit patterns (English & Amharic)
+    private val creditPattern = Pattern.compile("(?:credited\\s+with|credited|deposited|received|ገቢ\\s+ተደርጓል|ገቢ\\s+ሆኗል)\\s+(?:ETB|Birr|ብር)?\\s*([\\d,]+(?:\\.\\d{1,2})?)", Pattern.CASE_INSENSITIVE)
+    private val altCreditPattern = Pattern.compile("(?:ETB|Birr|ብር)?\\s*([\\d,]+(?:\\.\\d{1,2})?)\\s*(?:credited\\s+to|ገቢ\\s+ተደርጓል)", Pattern.CASE_INSENSITIVE)
+
+    // Balance pattern
+    private val balancePattern = Pattern.compile("(?:Current\\s+Balance|Balance|ቀሪ\\s+ሂሳብ(?:ዎ)?)(?:\\s+is)?\\s+(?:ETB|Birr|ብር)?\\s*([\\d,]+(?:\\.\\d{1,2})?)", Pattern.CASE_INSENSITIVE)
+    private val receiptPattern = Pattern.compile("(?:Receipt|Txn\\s*Id|Ref(?:erence)?|የግብይት\\s+ቁጥር):?\\s*([A-Za-z0-9]+)", Pattern.CASE_INSENSITIVE)
+    private val counterpartyPattern = Pattern.compile("(?:from|to|at|ወደ|ከ)\\s+([A-Za-z0-9\\s.&'-]+?)(?:\\.|,|on|\\n|Receipt|ቀሪ|$)", Pattern.CASE_INSENSITIVE)
 
     override fun canParse(sender: String, body: String): Boolean {
         val s = sender.trim().lowercase()
@@ -26,17 +34,28 @@ class CbeParser : BankParser {
             return null
         }
 
-        val isDebit = debitPattern.matcher(body).find()
-        val isCredit = creditPattern.matcher(body).find()
+        var isDebit = false
+        var isCredit = false
+        var amountMinor: Long? = null
 
-        if (!isDebit && !isCredit) return null
+        val debM = debitPattern.matcher(body)
+        val altDebM = altDebitPattern.matcher(body)
+        val credM = creditPattern.matcher(body)
+        val altCredM = altCreditPattern.matcher(body)
 
-        val direction = if (isDebit) TransactionType.EXPENSE else TransactionType.INCOME
-        val matcher = if (isDebit) debitPattern.matcher(body) else creditPattern.matcher(body)
-        matcher.find()
-
-        val amountStr = matcher.group(2)
-        val amountMinor = MoneyFormatter.parseToSantim(amountStr) ?: return null
+        if (debM.find()) {
+            isDebit = true
+            amountMinor = MoneyFormatter.parseToSantim(debM.group(1))
+        } else if (altDebM.find()) {
+            isDebit = true
+            amountMinor = MoneyFormatter.parseToSantim(altDebM.group(1))
+        } else if (credM.find()) {
+            isCredit = true
+            amountMinor = MoneyFormatter.parseToSantim(credM.group(1))
+        } else if (altCredM.find()) {
+            isCredit = true
+            amountMinor = MoneyFormatter.parseToSantim(altCredM.group(1))
+        }
 
         var balanceMinor: Long? = null
         val balMatcher = balancePattern.matcher(body)
@@ -44,10 +63,20 @@ class CbeParser : BankParser {
             balanceMinor = MoneyFormatter.parseToSantim(balMatcher.group(1))
         }
 
+        if (amountMinor == null) {
+            if (balanceMinor != null) {
+                amountMinor = 0L
+            } else {
+                return null
+            }
+        }
+
+        val direction = if (isDebit) TransactionType.EXPENSE else TransactionType.INCOME
+
         var accountHint: String? = null
         val accMatcher = accountPattern.matcher(body)
         if (accMatcher.find()) {
-            accountHint = accMatcher.group(1) ?: accMatcher.group(2)
+            accountHint = accMatcher.group(1)
         }
 
         var reference: String? = null

@@ -26,8 +26,8 @@ data class HomeUiState(
         isSampleMode = true,
         areAmountsHidden = false
     ),
-    val isMiniInsightDismissed: Boolean = false,
-    val isSampleBannerDismissed: Boolean = false,
+    val isMiniInsightDismissed: Boolean = true,
+    val isSampleBannerDismissed: Boolean = true,
     val isSyncing: Boolean = false
 )
 

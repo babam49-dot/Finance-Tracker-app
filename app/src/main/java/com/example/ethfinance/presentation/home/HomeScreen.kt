@@ -9,6 +9,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -119,7 +120,7 @@ fun HomeScreen(
             FloatingActionButton(
                 onClick = onNavigateToAddCash,
                 shape = RoundedCornerShape(999.dp),
-                containerColor = MaterialTheme.colorScheme.primary,
+                containerColor = Color(0xFF0F5132),
                 contentColor = Color.White,
                 modifier = Modifier.padding(bottom = 8.dp)
             ) {
@@ -231,6 +232,8 @@ fun HomeTopBar(
     onToggleHideAmounts: () -> Unit,
     onSyncNow: () -> Unit
 ) {
+    val extendedColors = LocalExtendedColors.current
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -266,6 +269,7 @@ fun HomeTopBar(
                     modifier = Modifier
                         .size(42.dp)
                         .background(MaterialTheme.colorScheme.surface, CircleShape)
+                        .border(1.dp, extendedColors.cardBorder, CircleShape)
                 ) {
                     if (isSyncing) {
                         CircularProgressIndicator(
@@ -277,7 +281,7 @@ fun HomeTopBar(
                         Icon(
                             imageVector = Icons.Default.Sync,
                             contentDescription = "Sync",
-                            tint = MaterialTheme.colorScheme.onBackground,
+                            tint = MaterialTheme.colorScheme.primary,
                             modifier = Modifier.size(22.dp)
                         )
                     }
@@ -289,11 +293,12 @@ fun HomeTopBar(
                 modifier = Modifier
                     .size(42.dp)
                     .background(MaterialTheme.colorScheme.surface, CircleShape)
+                    .border(1.dp, extendedColors.cardBorder, CircleShape)
             ) {
                 Icon(
                     imageVector = if (areAmountsHidden) Icons.Default.VisibilityOff else Icons.Default.Visibility,
                     contentDescription = "Toggle amount visibility",
-                    tint = MaterialTheme.colorScheme.onBackground,
+                    tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.size(22.dp)
                 )
             }
@@ -656,15 +661,29 @@ fun AccountCard(
                     color = MaterialTheme.colorScheme.onSurface
                 )
                 Spacer(modifier = Modifier.height(2.dp))
-                Text(
-                    text = account.maskedNumber,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-                if (account.balanceUpdatedAt != null) {
+                if (account.currentBalanceMinor != null) {
+                    Text(
+                        text = account.maskedNumber,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    if (account.balanceUpdatedAt != null) {
+                        Spacer(modifier = Modifier.height(2.dp))
+                        Text(
+                            text = stringResource(R.string.updated_ago, DateUtils.formatRelativeTime(account.balanceUpdatedAt)),
+                            style = MaterialTheme.typography.labelSmall.copy(fontSize = 11.sp),
+                            color = extendedColors.textLabel
+                        )
+                    }
+                } else {
+                    Text(
+                        text = account.maskedNumber,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
                     Spacer(modifier = Modifier.height(2.dp))
                     Text(
-                        text = stringResource(R.string.updated_ago, DateUtils.formatRelativeTime(account.balanceUpdatedAt)),
+                        text = stringResource(R.string.balance_unavailable),
                         style = MaterialTheme.typography.labelSmall.copy(fontSize = 11.sp),
                         color = extendedColors.textLabel
                     )
@@ -692,14 +711,10 @@ fun AccountCard(
                     }
                 } else {
                     Text(
-                        text = stringResource(R.string.balance_unavailable),
+                        text = "Unavailable",
                         style = MaterialTheme.typography.bodyMedium,
+                        fontWeight = FontWeight.SemiBold,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                    Text(
-                        text = stringResource(R.string.hint_tap_sync),
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.primary
                     )
                 }
             }

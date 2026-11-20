@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.ethfinance.core.util.NotificationHelper
 import com.example.ethfinance.data.sms.SmsInboxReader
 import com.example.ethfinance.domain.repository.SettingsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -38,12 +39,14 @@ sealed interface SettingsUiEvent {
     data object ConfirmSwitchMode : SettingsUiEvent
     data object DismissModeDialog : SettingsUiEvent
     data object DeleteAllData : SettingsUiEvent
+    data object SendTestNotification : SettingsUiEvent
 }
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
     private val settingsRepository: SettingsRepository,
-    private val smsInboxReader: SmsInboxReader
+    private val smsInboxReader: SmsInboxReader,
+    private val notificationHelper: NotificationHelper
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(SettingsUiState())
@@ -129,6 +132,9 @@ class SettingsViewModel @Inject constructor(
                 viewModelScope.launch {
                     settingsRepository.deleteAllUserData()
                 }
+            }
+            is SettingsUiEvent.SendTestNotification -> {
+                notificationHelper.sendTestNotification()
             }
         }
     }

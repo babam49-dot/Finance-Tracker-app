@@ -86,6 +86,28 @@ class BankParserTest {
     }
 
     @Test
+    fun cbeParser_amharicDebit_parsedSuccessfully() {
+        val fakeSms = "ውድ ደንበኛችን፣ የሂሳብ ቁጥር 1*****8018 በብር 250.00 ወጪ ተደርጓል። ቀሪ ሂሳብዎ ብር 5,944.34 ነው። የግብይት ቁጥር: FT99213"
+        val parsed = cbeParser.parse("CBE", fakeSms, 1794493920000L)
+
+        assertNotNull(parsed)
+        assertEquals(TransactionType.EXPENSE, parsed!!.direction)
+        assertEquals(25000L, parsed.amountMinor)
+        assertEquals(594434L, parsed.balanceAfterMinor)
+    }
+
+    @Test
+    fun telebirrParser_amharicTransfer_parsedSuccessfully() {
+        val fakeSms = "ብር 200.00 ወደ አበበ ከበደ አስተላልፈዋል። ቀሪ ሂሳብዎ ብር 1,640.50 ነው። የግብይት ቁጥር: TB12399"
+        val parsed = telebirrParser.parse("127", fakeSms, 1794493920000L)
+
+        assertNotNull(parsed)
+        assertEquals(TransactionType.EXPENSE, parsed!!.direction)
+        assertEquals(20000L, parsed.amountMinor)
+        assertEquals(164050L, parsed.balanceAfterMinor)
+    }
+
+    @Test
     fun genericParser_fallbackDetected_confidenceForcesReview() {
         val fakeSms = "You have paid 250.00 ETB for your order at merchant store."
         val parsed = genericParser.parse("UNKNOWN_BANK", fakeSms, 1794493920000L)

@@ -13,8 +13,10 @@ import com.example.ethfinance.domain.repository.AccountRepository
 import com.example.ethfinance.domain.repository.ReportRepository
 import com.example.ethfinance.domain.repository.SettingsRepository
 import com.example.ethfinance.domain.repository.TransactionRepository
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flatMapLatest
 import javax.inject.Inject
 
 class GetOverviewUseCase @Inject constructor(
@@ -23,6 +25,7 @@ class GetOverviewUseCase @Inject constructor(
     private val reportRepository: ReportRepository,
     private val settingsRepository: SettingsRepository
 ) {
+    @OptIn(ExperimentalCoroutinesApi::class)
     operator fun invoke(): Flow<OverviewSummary> {
         val now = System.currentTimeMillis()
         val monthRange = DateUtils.getPeriodRange(DateUtils.PeriodType.THIS_MONTH, now)
@@ -33,43 +36,95 @@ class GetOverviewUseCase @Inject constructor(
             settingsRepository.hideAmountsFlow
         ) { accounts, mode, hideAmounts ->
             Triple(accounts, mode == "DEMO", hideAmounts)
-        }.combine(transactionRepository.getPendingReviewCount(isSample = true)) { (accounts, isSample, hideAmounts), reviewCount ->
-            // Calculate digital balance and cash balance
-            var digitalMinor = 0L
-            var cashMinor = 0L
+        }.flatMapLatest { (accounts, isSample, hideAmounts) ->
+            combine(
+                transactionRepository.getPendingReviewCount(isSample = isSample),
+                reportRepository.getCashFlowSummary(monthRange.startEpochMillis, monthRange.endEpochMillis, isSample = isSample)
+            ) { reviewCount, cashFlowSummary ->
+                var digitalMinor = 0L
+                var cashMinor = 0L
 
-            for (acc in accounts) {
-                val bal = acc.currentBalanceMinor ?: 0L
-                if (acc.type == AccountType.CASH) {
-                    cashMinor += bal
-                } else {
-                    digitalMinor += bal
+                for (acc in accounts) {
+                    val bal = acc.currentBalanceMinor ?: 0L
+                    if (acc.type == AccountType.CASH) {
+                        cashMinor += bal
+                    } else {
+                        digitalMinor += bal
+                    }
                 }
-            }
 
-            val totalTrackedMinor = digitalMinor + cashMinor
+                val totalTrackedMinor = digitalMinor + cashMinor
 
-            // For cash flow, in demo mode we reproduce: +4,000.00 income, -676.26 expense, +3,323.74 net flow
-            val cashFlow = if (isSample) {
-                CashFlow(
-                    incomeMinor = 400000L,
-                    expenseMinor = 67626L,
-                    netFlowMinor = 332374L
+                val cashFlow = if (isSample) {
+                    CashFlow(
+                        incomeMinor = 400000L,
+                        expenseMinor = 67626L,
+                        netFlowMinor = 332374L
+                    )
+                } else {
+                    val inc = cashFlowSummary.totalIncomeMinor ?: 0L
+                    val exp = cashFlowSummary.totalExpenseMinor ?: 0L
+                    CashFlow(
+                        incomeMinor = inc,
+                        expenseMinor = exp,
+                        netFlowMinor = inc - exp
+                    )
+                }
+
+                val displayAccounts = if (!isSample && accounts.isEmpty()) {
+                    listOf(
+                        Account(
+                            id = 101L,
+                            type = AccountType.BANK_CBE,
+                            displayName = "CBE Account",
+                            institutionName = "Commercial Bank of Ethiopia",
+                            maskedNumber = "Commercial Bank of Ethiopia",
+                            senderIds = listOf("CBE"),
+                            currentBalanceMinor = null,
+                            balanceUpdatedAt = null,
+                            isSample = false,
+                            isHidden = false
+                        ),
+                        Account(
+                            id = 102L,
+                            type = AccountType.TELEBIRR,
+                            displayName = "Telebirr Wallet",
+                            institutionName = "Telebirr",
+                            maskedNumber = "Telebirr (127)",
+                            senderIds = listOf("127"),
+                            currentBalanceMinor = null,
+                            balanceUpdatedAt = null,
+                            isSample = false,
+                            isHidden = false
+                        ),
+                        Account(
+                            id = 103L,
+                            type = AccountType.CASH,
+                            displayName = "Cash Wallet",
+                            institutionName = "Physical Cash",
+                            maskedNumber = "Physical Cash",
+                            senderIds = emptyList(),
+                            currentBalanceMinor = null,
+                            balanceUpdatedAt = null,
+                            isSample = false,
+                            isHidden = false
+                        )
+                    )
+                } else {
+                    accounts
+                }
+
+                OverviewSummary(
+                    totalTrackedMinor = totalTrackedMinor,
+                    digitalBalanceMinor = digitalMinor,
+                    cashBalanceMinor = cashMinor,
+                    cashFlow = cashFlow,
+                    pendingReviewCount = if (isSample) 2 else reviewCount,
+                    accounts = displayAccounts,
+                    isSampleMode = isSample,
+                    areAmountsHidden = hideAmounts
                 )
-            } else {
-                CashFlow(0L, 0L, 0L)
             }
-
-            OverviewSummary(
-                totalTrackedMinor = totalTrackedMinor,
-                digitalBalanceMinor = digitalMinor,
-                cashBalanceMinor = cashMinor,
-                cashFlow = cashFlow,
-                pendingReviewCount = reviewCount,
-                accounts = accounts,
-                isSampleMode = isSample,
-                areAmountsHidden = hideAmounts
-            )
         }
     }
 }
@@ -98,35 +153,31 @@ class LogCashUseCase @Inject constructor(
             accountId = cashAccountId,
             type = type,
             amountMinor = amountMinor,
+            feeMinor = 0L,
+            balanceAfterMinor = null,
+            counterpartyName = "Manual Cash",
+            reference = null,
             categoryId = categoryId,
             categorySource = CategorySource.USER,
             confidence = 1.0f,
             needsReview = false,
-            note = note,
             occurredAt = occurredAt,
-            isSample = cashAccount?.isSample ?: false
+            rawSmsHash = null,
+            rawSmsBody = null,
+            sourceSender = null,
+            note = note,
+            isSample = false
         )
+
         transactionRepository.insertTransaction(tx)
 
         // Update cash account balance
-        val currentBal = cashAccount?.currentBalanceMinor ?: 0L
-        val newBal = when (type) {
-            TransactionType.CASH_IN, TransactionType.INCOME -> currentBal + amountMinor
-            TransactionType.CASH_OUT, TransactionType.EXPENSE -> currentBal - amountMinor
-            else -> currentBal
+        val currentBalance = cashAccount?.currentBalanceMinor ?: 0L
+        val newBalance = if (type == TransactionType.INCOME) {
+            currentBalance + amountMinor
+        } else {
+            currentBalance - amountMinor
         }
-        accountRepository.updateBalance(cashAccountId, newBal, occurredAt)
-    }
-}
-
-class ToggleModeUseCase @Inject constructor(
-    private val settingsRepository: SettingsRepository
-) {
-    suspend fun toLiveMode() {
-        settingsRepository.switchToLiveMode()
-    }
-
-    suspend fun toDemoMode() {
-        settingsRepository.switchToDemoMode()
+        accountRepository.updateBalance(cashAccountId, newBalance, occurredAt)
     }
 }
