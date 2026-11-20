@@ -62,8 +62,8 @@ class GetOverviewUseCase @Inject constructor(
                         netFlowMinor = 332374L
                     )
                 } else {
-                    val inc = cashFlowSummary.totalIncomeMinor ?: 0L
-                    val exp = cashFlowSummary.totalExpenseMinor ?: 0L
+                    val inc = cashFlowSummary?.totalIncomeMinor ?: 0L
+                    val exp = cashFlowSummary?.totalExpenseMinor ?: 0L
                     CashFlow(
                         incomeMinor = inc,
                         expenseMinor = exp,
