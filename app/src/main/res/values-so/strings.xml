@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Somali Translations (Soomaali) -->
+    <string name="app_name">Raad-raaca Maaliyadda Itoobiya</string>
+
+    <string name="nav_home">Hoyga</string>
+    <string name="nav_transactions">Dhaqdhaqaaqa</string>
+    <string name="nav_reports">Warbixinnada</string>
+    <string name="nav_review">Dib-u-eegis</string>
+    <string name="nav_settings">Dejinta</string>
+
+    <string name="overview_title">Guud-mar Maaliyadeed</string>
+    <string name="overview_subtitle_demo">Ogow halka lacagtaadu marto</string>
+    <string name="overview_subtitle_live">Si toos ah ula jaanqaaday CBE &amp; 127</string>
+    <string name="total_tracked_money">WADARTA LACAGTA LA RAAD-RAACAY</string>
+    <string name="digital_balance_label">Haraaga Dijitaalka (CBE &amp; Telebirr)</string>
+    <string name="physical_cash_label">Lacagta Kaashka ah</string>
+    <string name="review_banner_subtitle">U qoondee qaybo ama ansixi talooyinka</string>
+    <string name="cash_flow_title">SOCODKA LACAGTA EE BISHAAN</string>
+    <string name="cash_flow_income">Dakhli</string>
+    <string name="cash_flow_expense">Kharash</string>
+    <string name="cash_flow_net">Socodka Saafiga ah</string>
+    <string name="cash_flow_footnote">* Xawaaladaha u dhexeeya xisaabaadkaaga si toos ah loogama reebo</string>
+    <string name="tracked_accounts_title">XISAABAADKA LA RAAD-RAACO</string>
+    <string name="tag_sample">MUUNAD</string>
+    <string name="btn_log_cash">Qor Kaash</string>
+    <string name="demo_banner_message">Waxaad fiirinaysaa xog tusaale ah. U beddel Habka Tooska ah ee Dejinta si aad ula socoto farriimahaaga dhabta ah.</string>
+    <string name="balance_unavailable">Haraaga lama heli karo</string>
+    <string name="hint_tap_sync">Taabo astaanta kore si aad u waafajiso</string>
+    <string name="updated_ago">La cusbooneysiiyay %s ka hor</string>
+
+    <plurals name="review_banner_title">
+        <item quantity="one">%d Dhaqdhaqaaq ayaa u baahan dib-u-eegis</item>
+        <item quantity="other">%d Dhaqdhaqaaqyo ayaa u baahan dib-u-eegis</item>
+    </plurals>
+
+    <string name="period_7_days">7 maalmood</string>
+    <string name="period_30_days">30 maalmood</string>
+    <string name="period_this_month">Bishaan</string>
+    <string name="period_last_month">Bisheedii hore</string>
+    <string name="period_custom">Gaar ah</string>
+
+    <string name="transactions_title">Dhaqdhaqaaqa</string>
+    <string name="search_hint">Raadi ganacsade, xusuusin ama qaddar</string>
+    <string name="summary_in">Soo galay</string>
+    <string name="summary_out">Baxay</string>
+    <string name="summary_count">Tirada: %d</string>
+    <string name="empty_transactions">Wax dhaqdhaqaaq ah lama helin</string>
+    <string name="empty_transactions_hint">Isku day inaad hagaajiso taariikhda ama shaandhada</string>
+
+    <string name="detail_title">Faahfaahinta Dhaqdhaqaaqa</string>
+    <string name="action_split">Kala qaybi Dhaqdhaqaaqa</string>
+    <string name="action_mark_transfer">Ka dhig Xawaalad Gudaha ah</string>
+    <string name="action_exclude_reports">Ka reeb Warbixinnada</string>
+    <string name="action_view_sms">Muuji SMS-kii Asalka ahaa</string>
+    <string name="action_create_rule">Ka samee Xeer kan</string>
+
+    <string name="add_cash_title">Qor Kaash</string>
+    <string name="type_spent">Kharash</string>
+    <string name="type_received">La helay</string>
+    <string name="type_atm">Lagala baxay ATM</string>
+    <string name="type_deposit">Lagu shubay Bangiga</string>
+    <string name="label_note">Xusuusin / Faahfaahin</string>
+    <string name="action_save">Kaydi</string>
+    <string name="action_cancel">Jooji</string>
+    <string name="action_set_balance">Deji Haraaga Kaashka</string>
+
+    <string name="reports_title">Warbixinnada &amp; Falanqaynta</string>
+    <string name="filter_week">Toddobaad</string>
+    <string name="filter_month">Bil</string>
+    <string name="filter_3_months">3 Bilood</string>
+    <string name="filter_year">Sannad</string>
+    <string name="toggle_compare">Barbardhig xilligii hore</string>
+    <string name="report_spending_by_category">Kharashka Qayb ahaan</string>
+    <string name="report_spending_trend">Kharashka Xilliga</string>
+    <string name="report_income_vs_expense">Dakhliga &amp; Kharashka</string>
+    <string name="report_top_days">Maalmaha Kharashka Badan</string>
+    <string name="report_spending_by_bank">Kharashka Bangi ahaan</string>
+    <string name="report_top_merchants">Ganacsatada Sare</string>
+    <string name="report_biggest_expenses">Kharashaadka ugu Waaweyn</string>
+    <string name="report_budgets">Miisaaniyadda Qaybaha</string>
+    <string name="report_fees_paid">Kharashyada Adeegga ee la Bixiyay</string>
+    <string name="report_insights">Xogaha Caqliga leh</string>
+    <string name="action_export_csv">Dhoofi CSV</string>
+    <string name="action_export_pdf">Dhoofi Warbixinta PDF</string>
+
+    <string name="review_title">Khadka Dib-u-eegista</string>
+    <string name="review_suggestions_tab">Talooyinka</string>
+    <string name="review_needs_category_tab">U Baahan Qayb</string>
+    <string name="action_approve_all">Ansixi Dhammaan</string>
+    <string name="action_approve">Ansixi</string>
+    <string name="action_change">Beddel</string>
+    <string name="action_ignore">Iska dhaaf</string>
+    <string name="review_all_caught_up">Dhammaan waa diyaar!</string>
+    <string name="review_all_caught_up_hint">Dhammaan dhaqdhaqaaqyada si guul leh ayaa loo kala saaray</string>
+
+    <string name="settings_title">Dejinta</string>
+    <string name="section_mode">Habka Raad-raaca</string>
+    <string name="mode_demo">Habka Tusaalaha</string>
+    <string name="mode_live">Habka Tooska ah ee SMS</string>
+    <string name="section_appearance">Muuqaalka</string>
+    <string name="section_typography">Far-qoraalka</string>
+    <string name="section_language">Luqadda</string>
+    <string name="section_calendar">Kalandarka &amp; Tirooyinka</string>
+    <string name="section_accounts">Xisaabaadka la Raad-raaco</string>
+    <string name="section_categories">Qaybaha &amp; Xeerarka</string>
+    <string name="section_security">Amniga &amp; Xogta Qarsoon</string>
+    <string name="section_data">Xogta &amp; Kaydka</string>
+    <string name="section_about">Ku saabsan</string>
+</resources>

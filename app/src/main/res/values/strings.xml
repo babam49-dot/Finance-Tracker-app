@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Ethiopian Finance Tracker</string>
+
+    <!-- Navigation -->
+    <string name="nav_home">Home</string>
+    <string name="nav_transactions">Transactions</string>
+    <string name="nav_reports">Reports</string>
+    <string name="nav_review">Review</string>
+    <string name="nav_settings">Settings</string>
+
+    <!-- Overview / Home -->
+    <string name="overview_title">Financial Overview</string>
+    <string name="overview_subtitle_demo">Know where your money goes</string>
+    <string name="overview_subtitle_live">Auto-synced with CBE &amp; 127</string>
+    <string name="total_tracked_money">TOTAL TRACKED MONEY</string>
+    <string name="digital_balance_label">Digital Balance (CBE &amp; Telebirr)</string>
+    <string name="physical_cash_label">Physical Cash</string>
+    <string name="review_banner_subtitle">Assign categories or approve suggestions</string>
+    <string name="cash_flow_title">THIS MONTH\'S CASH FLOW</string>
+    <string name="cash_flow_income">Income</string>
+    <string name="cash_flow_expense">Expenses</string>
+    <string name="cash_flow_net">Net Flow</string>
+    <string name="cash_flow_footnote">* Internal transfers between your own accounts are automatically excluded</string>
+    <string name="tracked_accounts_title">TRACKED ACCOUNTS</string>
+    <string name="tag_sample">SAMPLE</string>
+    <string name="btn_log_cash">Log Cash</string>
+    <string name="demo_banner_message">You are viewing sample data. Switch to Live Mode in Settings to track your real messages.</string>
+    <string name="balance_unavailable">Balance unavailable</string>
+    <string name="hint_tap_sync">Tap sync icon above to import</string>
+    <string name="updated_ago">Updated %s</string>
+
+    <!-- Plurals for review banner -->
+    <plurals name="review_banner_title">
+        <item quantity="one">%d Transaction Needs Review</item>
+        <item quantity="other">%d Transactions Need Review</item>
+    </plurals>
+
+    <!-- Periods -->
+    <string name="period_7_days">7 days</string>
+    <string name="period_30_days">30 days</string>
+    <string name="period_this_month">This month</string>
+    <string name="period_last_month">Last month</string>
+    <string name="period_custom">Custom</string>
+
+    <!-- Transactions -->
+    <string name="transactions_title">Transactions</string>
+    <string name="search_hint">Search merchant, note, or amount</string>
+    <string name="summary_in">In</string>
+    <string name="summary_out">Out</string>
+    <string name="summary_count">Count: %d</string>
+    <string name="empty_transactions">No transactions found</string>
+    <string name="empty_transactions_hint">Try adjusting your filters or date range</string>
+
+    <!-- Transaction Detail -->
+    <string name="detail_title">Transaction Details</string>
+    <string name="action_split">Split Transaction</string>
+    <string name="action_mark_transfer">Mark as Internal Transfer</string>
+    <string name="action_exclude_reports">Exclude from Reports</string>
+    <string name="action_view_sms">Show Original SMS</string>
+    <string name="action_create_rule">Create Rule from This</string>
+
+    <!-- Add Cash Sheet -->
+    <string name="add_cash_title">Log Cash</string>
+    <string name="type_spent">Spent</string>
+    <string name="type_received">Received</string>
+    <string name="type_atm">ATM Withdrawal</string>
+    <string name="type_deposit">Deposit to Bank</string>
+    <string name="label_note">Note / Description</string>
+    <string name="action_save">Save</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_set_balance">Set Cash Balance</string>
+
+    <!-- Reports -->
+    <string name="reports_title">Reports &amp; Analytics</string>
+    <string name="filter_week">Week</string>
+    <string name="filter_month">Month</string>
+    <string name="filter_3_months">3 Months</string>
+    <string name="filter_year">Year</string>
+    <string name="toggle_compare">Compare with previous period</string>
+    <string name="report_spending_by_category">Spending by Category</string>
+    <string name="report_spending_trend">Spending Trend</string>
+    <string name="report_income_vs_expense">Income vs Expenses</string>
+    <string name="report_top_days">Top Spending Days</string>
+    <string name="report_spending_by_bank">Spending by Bank</string>
+    <string name="report_top_merchants">Top Merchants</string>
+    <string name="report_biggest_expenses">Biggest Expenses</string>
+    <string name="report_budgets">Category Budgets</string>
+    <string name="report_fees_paid">Fees &amp; Charges Paid</string>
+    <string name="report_insights">Smart Insights</string>
+    <string name="action_export_csv">Export CSV</string>
+    <string name="action_export_pdf">Export PDF Report</string>
+
+    <!-- Review -->
+    <string name="review_title">Review Queue</string>
+    <string name="review_suggestions_tab">Suggestions</string>
+    <string name="review_needs_category_tab">Needs Category</string>
+    <string name="action_approve_all">Approve All</string>
+    <string name="action_approve">Approve</string>
+    <string name="action_change">Change</string>
+    <string name="action_ignore">Ignore</string>
+    <string name="review_all_caught_up">All caught up!</string>
+    <string name="review_all_caught_up_hint">All transactions have been categorized with high confidence</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Settings</string>
+    <string name="section_mode">Tracking Mode</string>
+    <string name="mode_demo">Demo Mode</string>
+    <string name="mode_live">Live SMS Mode</string>
+    <string name="section_appearance">Appearance</string>
+    <string name="section_typography">Typography</string>
+    <string name="section_language">Language</string>
+    <string name="section_calendar">Calendar &amp; Numbers</string>
+    <string name="section_accounts">Tracked Accounts</string>
+    <string name="section_categories">Categories &amp; Rules</string>
+    <string name="section_security">Security &amp; Privacy</string>
+    <string name="section_data">Data &amp; Backup</string>
+    <string name="section_about">About</string>
+</resources>

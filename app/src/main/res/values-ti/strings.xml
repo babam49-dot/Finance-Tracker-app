@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Tigrinya Translations (ትግርኛ) -->
+    <string name="app_name">ናይ ኢትዮጵያ ፋይናንስ ተኸታታሊ</string>
+
+    <string name="nav_home">ቀንዲ ገጽ</string>
+    <string name="nav_transactions">ግብይታት</string>
+    <string name="nav_reports">ጸብጻባት</string>
+    <string name="nav_review">ግምገማ</string>
+    <string name="nav_settings">ቅጥዕታት</string>
+
+    <string name="overview_title">ሓፈሻዊ ትሕዝቶ ፋይናንስ</string>
+    <string name="overview_subtitle_demo">ገንዘብኩም ኣበይ ከም ዝኸይድ ፍለጡ</string>
+    <string name="overview_subtitle_live">ምስ CBEን 127ን ብኣውቶማቲክ ዝተመሳሰለ</string>
+    <string name="total_tracked_money">ጠቕላላ ዝተኸታተለ ገንዘብ</string>
+    <string name="digital_balance_label">ዲጂታል ሕሳብ (CBEን ቴሌብርን)</string>
+    <string name="physical_cash_label">ጥረ ገንዘብ</string>
+    <string name="review_banner_subtitle">ምድባት መድቡ ወይ ሓሳባት ኣጽድቑ</string>
+    <string name="cash_flow_title">ናይዚ ወርሒ ፍሰት ገንዘብ</string>
+    <string name="cash_flow_income">ኣታዊ</string>
+    <string name="cash_flow_expense">ወጻኢታት</string>
+    <string name="cash_flow_net">ጽሩይ ፍሰት</string>
+    <string name="cash_flow_footnote">* ኣብ መንጎ ናትኩም ኣካውንታት ዝግበር ምስግጋር ብኣውቶማቲክ ኣይሕወስን</string>
+    <string name="tracked_accounts_title">ዝተኸታተሉ ኣካውንታት</string>
+    <string name="tag_sample">ኣብነት</string>
+    <string name="btn_log_cash">ጥረ ገንዘብ መዝግብ</string>
+    <string name="demo_banner_message">ናይ ፈተነ ሓበሬታ ትርእዩ ኣለኹም። ናይ ሓቂ መልእኽትታት ንምክትታል ኣብ ቅጥዕታት ናብ ህያው ኩነት ቀይሩ።</string>
+    <string name="balance_unavailable">ዝተረፈ ሕሳብ ኣይተረኽበን</string>
+    <string name="hint_tap_sync">ንምምስሳል ኣብ ላዕሊ ዘሎ ምልክት ጠውቑ</string>
+    <string name="updated_ago">ቅድሚ %s ዝተመሓየሸ</string>
+
+    <plurals name="review_banner_title">
+        <item quantity="one">%d ግብይት ግምገማ የድልዮ</item>
+        <item quantity="other">%d ግብይታት ግምገማ የድልዮም</item>
+    </plurals>
+
+    <string name="period_7_days">7 መዓልታት</string>
+    <string name="period_30_days">30 መዓልታት</string>
+    <string name="period_this_month">ኣብዚ ወርሒ</string>
+    <string name="period_last_month">ዝሓለፈ ወርሒ</string>
+    <string name="period_custom">ፍሉይ</string>
+
+    <string name="transactions_title">ግብይታት</string>
+    <string name="search_hint">ነጋዳይ፣ መዘክር ወይ መጠን ድለዩ</string>
+    <string name="summary_in">ኣታዊ</string>
+    <string name="summary_out">ወጻኢ</string>
+    <string name="summary_count">ብዝሒ: %d</string>
+    <string name="empty_transactions">ዝኾነ ግብይት ኣይተረኽበን</string>
+    <string name="empty_transactions_hint">ናይ ዕለት ክሊ ወይ መጽረዪታት ኣዐርዩ</string>
+
+    <string name="detail_title">ዝርዝር ግብይት</string>
+    <string name="action_split">ግብይት ምቀል</string>
+    <string name="action_mark_transfer">ውሽጣዊ ምስግጋር ግበር</string>
+    <string name="action_exclude_reports">ካብ ጸብጻባት ኣግልል</string>
+    <string name="action_view_sms">መበቆላዊ SMS ኣርኢ</string>
+    <string name="action_create_rule">ካብዚ ሕጊ ፍጠር</string>
+
+    <string name="add_cash_title">ጥረ ገንዘብ መዝግብ</string>
+    <string name="type_spent">ዝወጸ</string>
+    <string name="type_received">ዝኣተወ</string>
+    <string name="type_atm">ካብ ATM ዝወጸ</string>
+    <string name="type_deposit">ናብ ባንኪ ዝኣተወ</string>
+    <string name="label_note">መዘክር</string>
+    <string name="action_save">ኣዕቅብ</string>
+    <string name="action_cancel">ሰርዝ</string>
+    <string name="action_set_balance">ዝተረፈ ጥረ ገንዘብ መድብ</string>
+
+    <string name="reports_title">ጸብጻባትን ትንታነታትን</string>
+    <string name="filter_week">ሰሙን</string>
+    <string name="filter_month">ወርሒ</string>
+    <string name="filter_3_months">3 ኣዋርሕ</string>
+    <string name="filter_year">ዓመት</string>
+    <string name="toggle_compare">ምስ ዝሓለፈ እዋን ኣነጻጽር</string>
+    <string name="report_spending_by_category">ወጻኢ ብምድብ</string>
+    <string name="report_spending_trend">ኣንፈት ወጻኢታት</string>
+    <string name="report_income_vs_expense">ኣታውን ወጻእን</string>
+    <string name="report_top_days">ላዕለዎት መዓልታት ወጻኢ</string>
+    <string name="report_spending_by_bank">ወጻኢ ብባንኪ</string>
+    <string name="report_top_merchants">ላዕለዎት ነጋዶ</string>
+    <string name="report_biggest_expenses">ዓበይቲ ወጻኢታት</string>
+    <string name="report_budgets">ናይ ምድብ ባጀት</string>
+    <string name="report_fees_paid">ዝተኸፍለ ክፍሊት ኣገልግሎት</string>
+    <string name="report_insights">ልቦናዊ ርድኢታት</string>
+    <string name="action_export_csv">CSV ኣውርድ</string>
+    <string name="action_export_pdf">PDF ጸብጻብ ኣውርድ</string>
+
+    <string name="review_title">መስርዕ ግምገማ</string>
+    <string name="review_suggestions_tab">ሓሳባት</string>
+    <string name="review_needs_category_tab">ምድብ ዘድልዮም</string>
+    <string name="action_approve_all">ንኹሉ ኣጽድቕ</string>
+    <string name="action_approve">ኣጽድቕ</string>
+    <string name="action_change">ቀይር</string>
+    <string name="action_ignore">ሕደጎ</string>
+    <string name="review_all_caught_up">ኩሉ ተዛዚሙ!</string>
+    <string name="review_all_caught_up_hint">ኩሎም ግብይታት ብትኽክል ተመዲቦም</string>
+
+    <string name="settings_title">ቅጥዕታት</string>
+    <string name="section_mode">ናይ ምክትታል ኩነት</string>
+    <string name="mode_demo">ናይ ፈተነ ኩነት</string>
+    <string name="mode_live">ህያው SMS ኩነት</string>
+    <string name="section_appearance">መልክዕ</string>
+    <string name="section_typography">ፊደላት</string>
+    <string name="section_language">ቋንቋ</string>
+    <string name="section_calendar">ካላንደርን ቁጽርታትን</string>
+    <string name="section_accounts">ዝተኸታተሉ ኣካውንታት</string>
+    <string name="section_categories">ምድባትን ሕግታትን</string>
+    <string name="section_security">ውሕስነትን ስቱርነትን</string>
+    <string name="section_data">ዳታን ዕቃበን</string>
+    <string name="section_about">ብዛዕባ</string>
+</resources>

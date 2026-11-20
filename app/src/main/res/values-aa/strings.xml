@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Afar Translations (Qafaraf) -->
+    <string name="app_name">Itoobiya Lacag Kataytu</string>
+
+    <string name="nav_home">Dabqa</string>
+    <string name="nav_transactions">Taamoomi</string>
+    <string name="nav_reports">Warka</string>
+    <string name="nav_review">Koroosiyya</string>
+    <string name="nav_settings">Kogsi</string>
+
+    <string name="overview_title">Lacag Wagari</string>
+    <string name="overview_subtitle_demo">Ku lacag may gactam ixxic</string>
+    <string name="overview_subtitle_live">CBE kee 127 luk xisabise</string>
+    <string name="total_tracked_money">KULLI KATAYTE LACAG</string>
+    <string name="digital_balance_label">Dijitaal Lacag (CBE kee Telebirr)</string>
+    <string name="physical_cash_label">Gaba Lacag</string>
+    <string name="review_banner_subtitle">Cindoot akah yeceey maxuqut oggola</string>
+    <string name="cash_flow_title">TA ALSAY LACAG GACSA</string>
+    <string name="cash_flow_income">Culee</string>
+    <string name="cash_flow_expense">Yewce</string>
+    <string name="cash_flow_net">Qadad Gacsa</string>
+    <string name="cash_flow_footnote">* Sin akawwunti fanah tan migda gacsa edde makalinta</string>
+    <string name="tracked_accounts_title">KATAYTE AKAWWUNTIT</string>
+    <string name="tag_sample">CEELALLO</string>
+    <string name="btn_log_cash">Gaba Lacag Kuktub</string>
+    <string name="demo_banner_message">Ceelallô data wagitak tan. Numma SMS katayuh Kogsi fanah gacaay Qadaada moditte eweq.</string>
+    <string name="balance_unavailable">Lacag mayan</string>
+    <string name="hint_tap_sync">Xisabisanah xaqqo taba</string>
+    <string name="updated_ago">%s duma cusubise</string>
+
+    <plurals name="review_banner_title">
+        <item quantity="one">%d Taama koroosiyya faxxa</item>
+        <item quantity="other">%d Taamoomi koroosiyya faxxa</item>
+    </plurals>
+
+    <string name="period_7_days">7 Ayró</string>
+    <string name="period_30_days">30 Ayró</string>
+    <string name="period_this_month">Ta Alsa</string>
+    <string name="period_last_month">Taturte Alsa</string>
+    <string name="period_custom">Baqo</string>
+
+    <string name="transactions_title">Taamoomi</string>
+    <string name="search_hint">Tijjar, kassit kee lacag gur</string>
+    <string name="summary_in">Culee</string>
+    <string name="summary_out">Yewce</string>
+    <string name="summary_count">Tiro: %d</string>
+    <string name="empty_transactions">Taama mayan</string>
+    <string name="empty_transactions_hint">Ayró kee calaltu duddubisa</string>
+
+    <string name="detail_title">Taama Xayyoosa</string>
+    <string name="action_split">Taama Fakooda</string>
+    <string name="action_mark_transfer">Addi Gacsa Ab</string>
+    <string name="action_exclude_reports">Warkaak Kal</string>
+    <string name="action_view_sms">Madqa SMS Yaballiy</string>
+    <string name="action_create_rule">Amok Madqa Gin</string>
+
+    <string name="add_cash_title">Gaba Lacag Kuktub</string>
+    <string name="type_spent">Yewce</string>
+    <string name="type_received">Geytime</string>
+    <string name="type_atm">ATM-ak Yewce</string>
+    <string name="type_deposit">Bankih Cule</string>
+    <string name="label_note">Kassit / Ixxic</string>
+    <string name="action_save">Dacris</string>
+    <string name="action_cancel">Kala</string>
+    <string name="action_set_balance">Gaba Lacag Heela</string>
+
+    <string name="reports_title">Warka kee Caagida</string>
+    <string name="filter_week">Aycaf</string>
+    <string name="filter_month">Alsa</string>
+    <string name="filter_3_months">3 Alsa</string>
+    <string name="filter_year">Sanat</string>
+    <string name="toggle_compare">Taturte waktih madaali</string>
+    <string name="report_spending_by_category">Cindootti Yewce</string>
+    <string name="report_spending_trend">Yewce Waggac</string>
+    <string name="report_income_vs_expense">Culee kee Yewce</string>
+    <string name="report_top_days">Mangom Yewce Ayroora</string>
+    <string name="report_spending_by_bank">Bankik Yewce</string>
+    <string name="report_top_merchants">Kulli Tijjar</string>
+    <string name="report_biggest_expenses">Kaxxa Yewceeti</string>
+    <string name="report_budgets">Cindootti Bajata</string>
+    <string name="report_fees_paid">Kaffalime Taamâ Kaffalta</string>
+    <string name="report_insights">Kaslik Kas</string>
+    <string name="action_export_csv">CSV Oobisa</string>
+    <string name="action_export_pdf">PDF Warka Oobisa</string>
+
+    <string name="review_title">Koroosiyyâ Safar</string>
+    <string name="review_suggestions_tab">Maxuqut</string>
+    <string name="review_needs_category_tab">Cindoot Faxxa</string>
+    <string name="action_approve_all">Kullim Oggola</string>
+    <string name="action_approve">Oggola</string>
+    <string name="action_change">Koroosa</string>
+    <string name="action_ignore">Kala</string>
+    <string name="review_all_caught_up">Kullim Gaba Tengeye!</string>
+    <string name="review_all_caught_up_hint">Kulli taamoomi cindoottih meqeemih cursumte</string>
+
+    <string name="settings_title">Kogsi</string>
+    <string name="section_mode">Kataytu Moditte</string>
+    <string name="mode_demo">Ceelallô Moditte</string>
+    <string name="mode_live">Qadaadâ SMS Moditte</string>
+    <string name="section_appearance">Bifa</string>
+    <string name="section_typography">Kutbeh Bifa</string>
+    <string name="section_language">Afaan</string>
+    <string name="section_calendar">Kalandaari kee Tiroora</string>
+    <string name="section_accounts">Katayte Akawwuntit</string>
+    <string name="section_categories">Cindoot kee Madqoota</string>
+    <string name="section_security">Aman kee Sirri</string>
+    <string name="section_data">Data kee Cula</string>
+    <string name="section_about">Waa\'ee</string>
+</resources>

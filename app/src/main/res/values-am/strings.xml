@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Amharic Translations (አማርኛ) -->
+    <string name="app_name">የኢትዮጵያ ፋይናንስ ተከታታይ</string>
+
+    <string name="nav_home">ዋና ገጽ</string>
+    <string name="nav_transactions">ግብይቶች</string>
+    <string name="nav_reports">ሪፖርቶች</string>
+    <string name="nav_review">ግምገማ</string>
+    <string name="nav_settings">ቅንብሮች</string>
+
+    <string name="overview_title">የፋይናንስ አጠቃላይ እይታ</string>
+    <string name="overview_subtitle_demo">ገንዘብዎ የት እንደሚሄድ ይወቁ</string>
+    <string name="overview_subtitle_live">ከCBE እና 127 ጋር በራስ-ሰር የተመሳሰለ</string>
+    <string name="total_tracked_money">ጠቅላላ የተመዘገበ ገንዘብ</string>
+    <string name="digital_balance_label">ዲጂታል ሂሳብ (CBE እና ቴሌብር)</string>
+    <string name="physical_cash_label">ጥሬ ገንዘብ</string>
+    <string name="review_banner_subtitle">ምድቦችን ይመድቡ ወይም ጥቆማዎችን ያጽድቁ</string>
+    <string name="cash_flow_title">የዚህ ወር የገንዘብ ፍሰት</string>
+    <string name="cash_flow_income">ገቢ</string>
+    <string name="cash_flow_expense">ወጪዎች</string>
+    <string name="cash_flow_net">የተጣራ ፍሰት</string>
+    <string name="cash_flow_footnote">* በራስዎ አካውንቶች መካከል የሚደረጉ ዝውውሮች በራስ-ሰር አይካተቱም</string>
+    <string name="tracked_accounts_title">የተመዘገቡ አካውንቶች</string>
+    <string name="tag_sample">ምሳሌ</string>
+    <string name="btn_log_cash">ጥሬ ገንዘብ መዝግብ</string>
+    <string name="demo_banner_message">የሙከራ መረጃ እየተመለከቱ ነው። ትክክለኛ የባንክ መልዕክቶችን ለመከታተል በቅንብሮች ውስጥ ወደ ቀጥታ ሁነታ ይቀይሩ።</string>
+    <string name="balance_unavailable">ቀሪ ሂሳብ አልተገኘም</string>
+    <string name="hint_tap_sync">ለማመሳሰል ከላይ ያለውን ምልክት ይጫኑ</string>
+    <string name="updated_ago">የተሻሻለው ከ%s በፊት</string>
+
+    <plurals name="review_banner_title">
+        <item quantity="one">%d ግብይት ግምገማ ያስፈልገዋል</item>
+        <item quantity="other">%d ግብይቶች ግምገማ ያስፈልጋቸዋል</item>
+    </plurals>
+
+    <string name="period_7_days">7 ቀናት</string>
+    <string name="period_30_days">30 ቀናት</string>
+    <string name="period_this_month">በዚህ ወር</string>
+    <string name="period_last_month">ያለፈው ወር</string>
+    <string name="period_custom">ብጁ</string>
+
+    <string name="transactions_title">ግብይቶች</string>
+    <string name="search_hint">ነጋዴ፣ ማስታወሻ ወይም መጠን ፈልግ</string>
+    <string name="summary_in">ገቢ</string>
+    <string name="summary_out">ወጪ</string>
+    <string name="summary_count">ብዛት: %d</string>
+    <string name="empty_transactions">ምንም ግብይት አልተገኘም</string>
+    <string name="empty_transactions_hint">የቀን ክልልዎን ወይም ማጣሪያዎችን ያስተካክሉ</string>
+
+    <string name="detail_title">የግብይት ዝርዝር</string>
+    <string name="action_split">ግብይቱን ከፋፍል</string>
+    <string name="action_mark_transfer">የውስጥ ዝውውር አድርግ</string>
+    <string name="action_exclude_reports">ከሪፖርቶች አግልል</string>
+    <string name="action_view_sms">የመጀመሪያውን SMS አሳይ</string>
+    <string name="action_create_rule">ከዚህ ደንብ ፍጠር</string>
+
+    <string name="add_cash_title">ጥሬ ገንዘብ መዝግብ</string>
+    <string name="type_spent">የወጣ</string>
+    <string name="type_received">የገባ</string>
+    <string name="type_atm">ከATM የወጣ</string>
+    <string name="type_deposit">ወደ ባንክ የገባ</string>
+    <string name="label_note">ማስታወሻ</string>
+    <string name="action_save">አስቀምጥ</string>
+    <string name="action_cancel">ሰርዝ</string>
+    <string name="action_set_balance">የጥሬ ገንዘብ ቀሪ አስቀምጥ</string>
+
+    <string name="reports_title">ሪፖርቶች እና ትንታኔዎች</string>
+    <string name="filter_week">ሳምንት</string>
+    <string name="filter_month">ወር</string>
+    <string name="filter_3_months">3 ወራት</string>
+    <string name="filter_year">አመት</string>
+    <string name="toggle_compare">ካለፈው ጊዜ ጋር አወዳድር</string>
+    <string name="report_spending_by_category">ወጪ በምድብ</string>
+    <string name="report_spending_trend">የወጪ አዝማሚያ</string>
+    <string name="report_income_vs_expense">ገቢ እና ወጪ</string>
+    <string name="report_top_days">ከፍተኛ ወጪ የወጣባቸው ቀናት</string>
+    <string name="report_spending_by_bank">ወጪ በባንክ</string>
+    <string name="report_top_merchants">ከፍተኛ ነጋዴዎች</string>
+    <string name="report_biggest_expenses">ትላልቅ ወጪዎች</string>
+    <string name="report_budgets">የምድብ በጀቶች</string>
+    <string name="report_fees_paid">የተከፈሉ የአገልግሎት ክፍያዎች</string>
+    <string name="report_insights">ብልህ ግንዛቤዎች</string>
+    <string name="action_export_csv">CSV አውርድ</string>
+    <string name="action_export_pdf">PDF ሪፖርት አውርድ</string>
+
+    <string name="review_title">የግምገማ ዝርዝር</string>
+    <string name="review_suggestions_tab">ጥቆማዎች</string>
+    <string name="review_needs_category_tab">ምድብ የሚያስፈልጋቸው</string>
+    <string name="action_approve_all">ሁሉንም አጽድቅ</string>
+    <string name="action_approve">አጽድቅ</string>
+    <string name="action_change">ቀይር</string>
+    <string name="action_ignore">ተወው</string>
+    <string name="review_all_caught_up">ሁሉም ተጠናቋል!</string>
+    <string name="review_all_caught_up_hint">ሁሉም ግብይቶች በተሳካ ሁኔታ ተመድበዋል</string>
+
+    <string name="settings_title">ቅንብሮች</string>
+    <string name="section_mode">የክትትል ሁነታ</string>
+    <string name="mode_demo">የሙከራ ሁነታ</string>
+    <string name="mode_live">ቀጥታ የSMS ሁነታ</string>
+    <string name="section_appearance">መልክ</string>
+    <string name="section_typography">የፊደል አጻጻፍ</string>
+    <string name="section_language">ቋንቋ</string>
+    <string name="section_calendar">የቀን መቁጠሪያ እና ቁጥሮች</string>
+    <string name="section_accounts">የተመዘገቡ አካውንቶች</string>
+    <string name="section_categories">ምድቦች እና ደንቦች</string>
+    <string name="section_security">ደህንነት እና ግላዊነት</string>
+    <string name="section_data">መረጃ እና ቅጂ</string>
+    <string name="section_about">ስለ መተግበሪያው</string>
+</resources>

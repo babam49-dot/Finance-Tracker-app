@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Afaan Oromoo Translations -->
+    <string name="app_name">Hordoffaa Faayinaansii Itoophiyaa</string>
+
+    <string name="nav_home">Mana</string>
+    <string name="nav_transactions">Daldala</string>
+    <string name="nav_reports">Gabaasa</string>
+    <string name="nav_review">Gamaaggama</string>
+    <string name="nav_settings">Sajoo</string>
+
+    <string name="overview_title">Ilaalcha Waliigalaa Faayinaansii</string>
+    <string name="overview_subtitle_demo">Qarshiin kee eessa akka deemu beeki</string>
+    <string name="overview_subtitle_live">CBE fi 127 wajjin ofumaan wal-simsiifame</string>
+    <string name="total_tracked_money">DIMSHAASHA QARSHII HORDOFFAME</string>
+    <string name="digital_balance_label">Haftee Diijitaalaa (CBE fi Telebirr)</string>
+    <string name="physical_cash_label">Qarshii Harka Jiru</string>
+    <string name="review_banner_subtitle">Ramaddii kennaa ykn yaada dhiyaate mirkaneessaa</string>
+    <string name="cash_flow_title">YAASAA QARSHII JIA KANAA</string>
+    <string name="cash_flow_income">Galii</string>
+    <string name="cash_flow_expense">Baasii</string>
+    <string name="cash_flow_net">Haftee Qulqulluu</string>
+    <string name="cash_flow_footnote">* Dabarsaan herrega kee gidduu jiru ofumaan hin dabalumu</string>
+    <string name="tracked_accounts_title">HERREGOTA HORDOFFAMAN</string>
+    <string name="tag_sample">FAKKEENYA</string>
+    <string name="btn_log_cash">Qarshii Galmeessi</string>
+    <string name="demo_banner_message">Daataa fakkeenyaa ilaalaa jirta. Ergaa sirrii hordofuuf Sajoo keessaa gara Haala Qabatamaatti jijjiiri.</string>
+    <string name="balance_unavailable">Hafteen hin argamne</string>
+    <string name="hint_tap_sync">Wal-simsiisuuf mallattoo olii tuqi</string>
+    <string name="updated_ago">%s dura haarome</string>
+
+    <plurals name="review_banner_title">
+        <item quantity="one">Daldalli %d gamaaggama barbaada</item>
+        <item quantity="other">Daldallawwan %d gamaaggama barbaadu</item>
+    </plurals>
+
+    <string name="period_7_days">Guyyoota 7</string>
+    <string name="period_30_days">Guyyoota 30</string>
+    <string name="period_this_month">Ji\'a kana</string>
+    <string name="period_last_month">Ji\'a darbe</string>
+    <string name="period_custom">Kan ofii</string>
+
+    <string name="transactions_title">Daldala</string>
+    <string name="search_hint">Daldalaa, yaada, ykn hanga barbaadi</string>
+    <string name="summary_in">Galii</string>
+    <string name="summary_out">Baasii</string>
+    <string name="summary_count">Baay\'ina: %d</string>
+    <string name="empty_transactions">Daldalli hin argamne</string>
+    <string name="empty_transactions_hint">Guyyaa ykn calaltuu sirreeffadhaa</string>
+
+    <string name="detail_title">Bal\'ina Daldalaa</string>
+    <string name="action_split">Daldala Qoodi</string>
+    <string name="action_mark_transfer">Dabarsa Keessaa Taasisi</string>
+    <string name="action_exclude_reports">Gabaasa keessaa baasi</string>
+    <string name="action_view_sms">SMS Jalqabaa Agarsiisi</string>
+    <string name="action_create_rule">Kanarraa Seera Uumi</string>
+
+    <string name="add_cash_title">Qarshii Galmeessi</string>
+    <string name="type_spent">Baasii</string>
+    <string name="type_received">Fudhatame</string>
+    <string name="type_atm">ATM irraa baafame</string>
+    <string name="type_deposit">Baankiitti gale</string>
+    <string name="label_note">Yaada / Ibsa</string>
+    <string name="action_save">Olkaayi</string>
+    <string name="action_cancel">Haqi</string>
+    <string name="action_set_balance">Haftee Qarshii Mirkaneessi</string>
+
+    <string name="reports_title">Gabaasa fi Xiinxala</string>
+    <string name="filter_week">Torbee</string>
+    <string name="filter_month">Ji\'a</string>
+    <string name="filter_3_months">Ji\'oota 3</string>
+    <string name="filter_year">Waggaa</string>
+    <string name="toggle_compare">Yeroo darbe wajjin madaali</string>
+    <string name="report_spending_by_category">Baasii Ramaddiidhaan</string>
+    <string name="report_spending_trend">Adeemsa Baasii</string>
+    <string name="report_income_vs_expense">Galii fi Baasii</string>
+    <string name="report_top_days">Guyyoota Baasii Ol\'aanaa</string>
+    <string name="report_spending_by_bank">Baasii Baankiidhaan</string>
+    <string name="report_top_merchants">Daldaltoota Ol\'aanoo</string>
+    <string name="report_biggest_expenses">Baasii Guguddoo</string>
+    <string name="report_budgets">Bajaata Ramaddii</string>
+    <string name="report_fees_paid">Kaffaltii Tajaajilaa Kaffalame</string>
+    <string name="report_insights">Hubannoo Qaxalee</string>
+    <string name="action_export_csv">CSV Baasi</string>
+    <string name="action_export_pdf">Gabaasa PDF Baasi</string>
+
+    <string name="review_title">Tarree Gamaaggamaa</string>
+    <string name="review_suggestions_tab">Yaadota</string>
+    <string name="review_needs_category_tab">Ramaddii Barbaada</string>
+    <string name="action_approve_all">Hundaa Mirkaneessi</string>
+    <string name="action_approve">Mirkaneessi</string>
+    <string name="action_change">Jijjiiri</string>
+    <string name="action_ignore">Dhiisi</string>
+    <string name="review_all_caught_up">Hundi xumurameera!</string>
+    <string name="review_all_caught_up_hint">Daldallawwan hundi milkaa\'inaan ramadamaniiru</string>
+
+    <string name="settings_title">Sajoo</string>
+    <string name="section_mode">Haala Hordoffii</string>
+    <string name="mode_demo">Haala Fakkeenyaa</string>
+    <string name="mode_live">Haala SMS Qabatamaa</string>
+    <string name="section_appearance">Bifa</string>
+    <string name="section_typography">Barreeffama</string>
+    <string name="section_language">Afaan</string>
+    <string name="section_calendar">Dhaha fi Lakkoofsota</string>
+    <string name="section_accounts">Herregota Hordoffaman</string>
+    <string name="section_categories">Ramaddii fi Seerota</string>
+    <string name="section_security">Nageenya fi Iccitii</string>
+    <string name="section_data">Daataa fi Olkaawwisa</string>
+    <string name="section_about">Waa\'ee</string>
+</resources>
