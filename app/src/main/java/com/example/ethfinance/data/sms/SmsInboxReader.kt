@@ -2,6 +2,7 @@ package com.example.ethfinance.data.sms
 
 import android.content.Context
 import android.net.Uri
+import com.example.ethfinance.core.util.NotificationHelper
 import com.example.ethfinance.data.local.db.dao.AccountDao
 import com.example.ethfinance.data.local.db.dao.TransactionDao
 import com.example.ethfinance.data.local.db.entity.AccountEntity
@@ -23,7 +24,8 @@ class SmsInboxReader @Inject constructor(
     private val parserEngine: ParserEngine,
     private val categorizer: Categorizer,
     private val accountDao: AccountDao,
-    private val transactionDao: TransactionDao
+    private val transactionDao: TransactionDao,
+    private val notificationHelper: NotificationHelper
 ) {
 
     suspend fun importInbox(): Int = withContext(Dispatchers.IO) {
@@ -59,11 +61,13 @@ class SmsInboxReader @Inject constructor(
                 }
             }
         } catch (e: SecurityException) {
-            // Permission not yet granted
             e.printStackTrace()
         } catch (e: Exception) {
             e.printStackTrace()
         }
+
+        // Post sync notification
+        notificationHelper.notifySyncCompleted(importedCount)
 
         importedCount
     }
@@ -74,7 +78,7 @@ class SmsInboxReader @Inject constructor(
         val hash = sha256("$sender:$normalizedBody:$minuteTimestamp")
 
         if (transactionDao.getTransactionByHash(hash) != null) {
-            return false // Already processed
+            return false
         }
 
         val parsed = parserEngine.parse(sender, body, timestamp) ?: return false

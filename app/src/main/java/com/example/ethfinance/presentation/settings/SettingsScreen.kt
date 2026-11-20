@@ -165,7 +165,35 @@ fun SettingsScreen(
                 }
             }
 
-            // 2. Language Section (6 Ethiopian Languages)
+            // 2. Appearance Section (Theme Switcher: Light / Dark / System)
+            item {
+                SettingsCard(title = stringResource(R.string.section_appearance)) {
+                    Text(
+                        text = "Theme Mode",
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        listOf(
+                            "LIGHT" to "Bright / Light",
+                            "DARK" to "Dark",
+                            "SYSTEM" to "System Default"
+                        ).forEach { (mode, label) ->
+                            FilterChip(
+                                selected = state.theme == mode,
+                                onClick = { viewModel.onEvent(SettingsUiEvent.SetTheme(mode)) },
+                                label = { Text(label) }
+                            )
+                        }
+                    }
+                }
+            }
+
+            // 3. Language Section (6 Ethiopian Languages)
             item {
                 SettingsCard(title = stringResource(R.string.section_language)) {
                     val languages = listOf(
@@ -199,7 +227,7 @@ fun SettingsScreen(
                 }
             }
 
-            // 3. Calendar & Numbers Section
+            // 4. Calendar & Numbers Section
             item {
                 SettingsCard(title = stringResource(R.string.section_calendar)) {
                     Row(
@@ -245,7 +273,7 @@ fun SettingsScreen(
                 }
             }
 
-            // 4. Typography Section
+            // 5. Typography Section
             item {
                 SettingsCard(title = stringResource(R.string.section_typography)) {
                     Text(
@@ -280,7 +308,7 @@ fun SettingsScreen(
                 }
             }
 
-            // 5. Data & Privacy Section
+            // 6. Data & Privacy Section
             item {
                 SettingsCard(title = stringResource(R.string.section_security)) {
                     Text(
@@ -309,7 +337,7 @@ fun SettingsScreen(
                 }
             }
 
-            // 6. About
+            // 7. About
             item {
                 SettingsCard(title = stringResource(R.string.section_about)) {
                     Text(

@@ -5,6 +5,8 @@ import android.content.Context
 import android.content.Intent
 import android.provider.Telephony
 import com.example.ethfinance.core.common.DispatcherProvider
+import com.example.ethfinance.core.util.MoneyFormatter
+import com.example.ethfinance.core.util.NotificationHelper
 import com.example.ethfinance.data.local.db.dao.AccountDao
 import com.example.ethfinance.data.local.db.dao.TransactionDao
 import com.example.ethfinance.data.local.db.entity.AccountEntity
@@ -18,10 +20,6 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import java.security.MessageDigest
 import javax.inject.Inject
-
-interface MessageSource {
-    suspend fun startListening(onMessageReceived: (source: String, body: String, timestamp: Long) -> Unit)
-}
 
 @AndroidEntryPoint
 class SmsReceiver : BroadcastReceiver() {
@@ -40,6 +38,9 @@ class SmsReceiver : BroadcastReceiver() {
 
     @Inject
     lateinit var transactionDao: TransactionDao
+
+    @Inject
+    lateinit var notificationHelper: NotificationHelper
 
     @Inject
     lateinit var dispatcherProvider: DispatcherProvider
@@ -70,19 +71,16 @@ class SmsReceiver : BroadcastReceiver() {
     }
 
     private suspend fun processIncomingSms(sender: String, body: String, timestamp: Long) {
-        // 1. Dedupe check: SHA-256 of sender + normalized body + timestamp rounded to minute
         val normalizedBody = body.trim().replace("\\s+".toRegex(), " ")
         val minuteTimestamp = timestamp / 60000L
         val hash = sha256("$sender:$normalizedBody:$minuteTimestamp")
 
         if (transactionDao.getTransactionByHash(hash) != null) {
-            return // Already processed
+            return
         }
 
-        // 2. Parse SMS
         val parsed = parserEngine.parse(sender, body, timestamp) ?: return
 
-        // 3. Resolve Account
         val accountType = when {
             sender.contains("cbe", ignoreCase = true) -> AccountType.BANK_CBE
             sender.contains("127") || sender.contains("telebirr", ignoreCase = true) -> AccountType.TELEBIRR
@@ -111,7 +109,6 @@ class SmsReceiver : BroadcastReceiver() {
             )
             account = accountDao.getAccountById(newAccountId)
         } else if (parsed.balanceAfterMinor != null) {
-            // Update balance if timestamp is newer
             val lastUpdated = account.balanceUpdatedAt ?: 0L
             if (timestamp >= lastUpdated) {
                 accountDao.updateBalance(account.id, parsed.balanceAfterMinor, timestamp)
@@ -120,14 +117,12 @@ class SmsReceiver : BroadcastReceiver() {
 
         val accountId = account?.id ?: 1L
 
-        // 4. Categorize
         val catResult = categorizer.categorize(
             counterparty = parsed.counterparty,
             smsBody = body,
             amountMinor = parsed.amountMinor
         )
 
-        // 5. Insert Transaction
         val transaction = TransactionEntity(
             accountId = accountId,
             type = parsed.direction,
@@ -142,12 +137,21 @@ class SmsReceiver : BroadcastReceiver() {
             needsReview = catResult.needsReview || parsed.confidence < 0.5f,
             occurredAt = parsed.occurredAt,
             rawSmsHash = hash,
-            rawSmsBody = null, // Raw text encrypted/stored only if setting enabled
+            rawSmsBody = null,
             sourceSender = sender,
             isSample = false
         )
 
-        transactionDao.insertTransaction(transaction)
+        val insertedId = transactionDao.insertTransaction(transaction)
+
+        // Post notification
+        val amountFormatted = MoneyFormatter.formatSantim(parsed.amountMinor)
+        val cp = parsed.counterparty ?: account?.displayName ?: "Bank"
+        notificationHelper.notifyNewTransaction(
+            title = "New Transaction: $amountFormatted",
+            message = "$cp • ${sender.uppercase()}",
+            txId = insertedId
+        )
     }
 
     private fun sha256(input: String): String {
