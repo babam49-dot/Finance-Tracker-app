@@ -41,10 +41,14 @@ class GetOverviewUseCase @Inject constructor(
                 transactionRepository.getPendingReviewCount(isSample = isSample),
                 reportRepository.getCashFlowSummary(monthRange.startEpochMillis, monthRange.endEpochMillis, isSample = isSample)
             ) { reviewCount, cashFlowSummary ->
+                val activeAccounts = accounts.filter { acc ->
+                    if (isSample) acc.isSample else (!acc.isSample && acc.maskedNumber != "1********8018")
+                }
+
                 var digitalMinor = 0L
                 var cashMinor = 0L
 
-                for (acc in accounts) {
+                for (acc in activeAccounts) {
                     val bal = acc.currentBalanceMinor ?: 0L
                     if (acc.type == AccountType.CASH) {
                         cashMinor += bal
@@ -71,7 +75,7 @@ class GetOverviewUseCase @Inject constructor(
                     )
                 }
 
-                val displayAccounts = if (!isSample && accounts.isEmpty()) {
+                val displayAccounts = if (!isSample && activeAccounts.isEmpty()) {
                     listOf(
                         Account(
                             id = 101L,
@@ -111,7 +115,7 @@ class GetOverviewUseCase @Inject constructor(
                         )
                     )
                 } else {
-                    accounts
+                    activeAccounts
                 }
 
                 OverviewSummary(

@@ -50,6 +50,13 @@ class HomeViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
+            settingsRepository.modeFlow.collect { mode ->
+                if (mode == "LIVE") {
+                    settingsRepository.switchToLiveMode()
+                }
+            }
+        }
+        viewModelScope.launch {
             getOverviewUseCase().collect { overview ->
                 _uiState.update { it.copy(overview = overview) }
             }

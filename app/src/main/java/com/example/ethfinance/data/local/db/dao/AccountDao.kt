@@ -24,6 +24,9 @@ interface AccountDao {
     @Query("SELECT * FROM accounts WHERE type = :type LIMIT 1")
     suspend fun getFirstAccountByType(type: AccountType): AccountEntity?
 
+    @Query("SELECT * FROM accounts WHERE type = :type AND isSample = 0 AND maskedNumber != '1********8018' LIMIT 1")
+    suspend fun getFirstRealAccountByType(type: AccountType): AccountEntity?
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAccount(account: AccountEntity): Long
 
@@ -36,7 +39,7 @@ interface AccountDao {
     @Query("UPDATE accounts SET currentBalanceMinor = :balanceMinor, balanceUpdatedAt = :updatedAt WHERE id = :id")
     suspend fun updateBalance(id: Long, balanceMinor: Long, updatedAt: Long)
 
-    @Query("DELETE FROM accounts WHERE isSample = 1")
+    @Query("DELETE FROM accounts WHERE isSample = 1 OR maskedNumber = '1********8018'")
     suspend fun deleteSampleAccounts()
 
     @Query("DELETE FROM accounts")

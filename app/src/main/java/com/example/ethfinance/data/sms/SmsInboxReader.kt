@@ -30,6 +30,10 @@ class SmsInboxReader @Inject constructor(
 ) {
 
     suspend fun importInbox(): Int = withContext(Dispatchers.IO) {
+        // Clean up any remaining demo sample accounts so only real accounts exist
+        accountDao.deleteSampleAccounts()
+        transactionDao.deleteSampleTransactions()
+
         var importedCount = 0
         val uri = Uri.parse("content://sms/inbox")
         val projection = arrayOf("_id", "address", "body", "date")
@@ -93,7 +97,7 @@ class SmsInboxReader @Inject constructor(
         var account = if (!parsed.accountHint.isNullOrBlank()) {
             accountDao.getAccountByTypeAndMask(accountType, parsed.accountHint)
         } else {
-            accountDao.getFirstAccountByType(accountType)
+            accountDao.getFirstRealAccountByType(accountType)
         }
 
         if (account == null) {
@@ -142,12 +146,12 @@ class SmsInboxReader @Inject constructor(
 
         // Update destination account balance if available
         if (isTransferToBank) {
-            val bankAccount = accountDao.getFirstAccountByType(AccountType.BANK_CBE)
+            val bankAccount = accountDao.getFirstRealAccountByType(AccountType.BANK_CBE)
             if (bankAccount != null && bankAccount.currentBalanceMinor != null && (bankAccount.balanceUpdatedAt ?: 0L) < timestamp) {
                 accountDao.updateBalance(bankAccount.id, bankAccount.currentBalanceMinor + parsed.amountMinor, timestamp)
             }
         } else if (isTransferToTelebirr) {
-            val telebirrAccount = accountDao.getFirstAccountByType(AccountType.TELEBIRR)
+            val telebirrAccount = accountDao.getFirstRealAccountByType(AccountType.TELEBIRR)
             if (telebirrAccount != null && telebirrAccount.currentBalanceMinor != null && (telebirrAccount.balanceUpdatedAt ?: 0L) < timestamp) {
                 accountDao.updateBalance(telebirrAccount.id, telebirrAccount.currentBalanceMinor + parsed.amountMinor, timestamp)
             }
