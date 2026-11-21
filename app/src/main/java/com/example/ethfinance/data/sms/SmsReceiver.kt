@@ -12,6 +12,7 @@ import com.example.ethfinance.data.local.db.dao.TransactionDao
 import com.example.ethfinance.data.local.db.entity.AccountEntity
 import com.example.ethfinance.data.local.db.entity.AccountType
 import com.example.ethfinance.data.local.db.entity.TransactionEntity
+import com.example.ethfinance.data.local.db.entity.TransactionType
 import com.example.ethfinance.data.sms.parser.ParserEngine
 import com.example.ethfinance.domain.categorize.Categorizer
 import dagger.hilt.android.AndroidEntryPoint
@@ -117,38 +118,81 @@ class SmsReceiver : BroadcastReceiver() {
 
         val accountId = account?.id ?: 1L
 
+        val fullText = "${parsed.counterparty ?: ""} $body".lowercase()
+        val isTelebirrSender = sender.contains("127") || sender.contains("telebirr", ignoreCase = true)
+        val isCbeSender = sender.contains("cbe", ignoreCase = true)
+
+        val isTransferToBank = isTelebirrSender && (
+            fullText.contains("bank") || fullText.contains("cbe") || fullText.contains("commercial") ||
+            fullText.contains("ንግድ ባንክ") || fullText.contains("ባንክ") || fullText.contains("cbebirr") ||
+            fullText.contains("dashen") || fullText.contains("awash") || fullText.contains("boa")
+        )
+
+        val isTransferToTelebirr = isCbeSender && (
+            fullText.contains("telebirr") || fullText.contains("ቴሌብር") || fullText.contains("127") || fullText.contains("cbebirr")
+        )
+
+        val isInternalTransfer = isTransferToBank || isTransferToTelebirr
+
+        // Update destination account balance if available
+        if (isTransferToBank) {
+            val bankAccount = accountDao.getFirstAccountByType(AccountType.BANK_CBE)
+            if (bankAccount != null && bankAccount.currentBalanceMinor != null && (bankAccount.balanceUpdatedAt ?: 0L) < timestamp) {
+                accountDao.updateBalance(bankAccount.id, bankAccount.currentBalanceMinor + parsed.amountMinor, timestamp)
+            }
+        } else if (isTransferToTelebirr) {
+            val telebirrAccount = accountDao.getFirstAccountByType(AccountType.TELEBIRR)
+            if (telebirrAccount != null && telebirrAccount.currentBalanceMinor != null && (telebirrAccount.balanceUpdatedAt ?: 0L) < timestamp) {
+                accountDao.updateBalance(telebirrAccount.id, telebirrAccount.currentBalanceMinor + parsed.amountMinor, timestamp)
+            }
+        }
+
+        val txType = when {
+            isInternalTransfer && parsed.direction == TransactionType.EXPENSE -> TransactionType.TRANSFER_OUT
+            isInternalTransfer && parsed.direction == TransactionType.INCOME -> TransactionType.TRANSFER_IN
+            else -> parsed.direction
+        }
+
+        val txCounterparty = when {
+            isTransferToBank -> "Transfer: Telebirr → Bank"
+            isTransferToTelebirr -> "Transfer: Bank → Telebirr"
+            else -> parsed.counterparty
+        }
+
         val catResult = categorizer.categorize(
-            counterparty = parsed.counterparty,
+            counterparty = txCounterparty,
             smsBody = body,
             amountMinor = parsed.amountMinor
         )
 
         val transaction = TransactionEntity(
             accountId = accountId,
-            type = parsed.direction,
+            type = txType,
             amountMinor = parsed.amountMinor,
             feeMinor = parsed.feeMinor,
             balanceAfterMinor = parsed.balanceAfterMinor,
-            counterpartyName = parsed.counterparty,
+            counterpartyName = txCounterparty,
             reference = parsed.reference,
             categoryId = catResult.categoryId,
             categorySource = catResult.source,
             confidence = catResult.confidence,
-            needsReview = catResult.needsReview || parsed.confidence < 0.5f,
+            needsReview = if (isInternalTransfer) false else (catResult.needsReview || parsed.confidence < 0.5f),
             occurredAt = parsed.occurredAt,
             rawSmsHash = hash,
             rawSmsBody = null,
             sourceSender = sender,
-            isSample = false
+            isSample = false,
+            isExcludedFromReports = isInternalTransfer
         )
 
         val insertedId = transactionDao.insertTransaction(transaction)
 
         // Post notification
         val amountFormatted = MoneyFormatter.formatSantim(parsed.amountMinor)
-        val cp = parsed.counterparty ?: account?.displayName ?: "Bank"
+        val cp = txCounterparty ?: account?.displayName ?: "Bank"
+        val notifTitle = if (isInternalTransfer) "Transfer: $amountFormatted" else "New Transaction: $amountFormatted"
         notificationHelper.notifyNewTransaction(
-            title = "New Transaction: $amountFormatted",
+            title = notifTitle,
             message = "$cp • ${sender.uppercase()}",
             txId = insertedId
         )

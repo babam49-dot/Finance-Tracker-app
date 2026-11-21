@@ -2,6 +2,7 @@ package com.example.ethfinance.presentation.navigation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -21,7 +22,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
@@ -70,7 +74,8 @@ fun AppNavigation(
             if (isBottomBarVisible) {
                 NavigationBar(
                     containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    tonalElevation = 0.dp
+                    tonalElevation = 0.dp,
+                    modifier = Modifier.height(60.dp)
                 ) {
                     bottomNavScreens.forEach { screen ->
                         val selected = currentRoute == screen.route
@@ -85,6 +90,7 @@ fun AppNavigation(
 
                         NavigationBarItem(
                             selected = selected,
+                            alwaysShowLabel = true,
                             onClick = {
                                 navController.navigate(screen.route) {
                                     popUpTo(navController.graph.findStartDestination().id) {
@@ -102,17 +108,37 @@ fun AppNavigation(
                                                 containerColor = extendedColors.reviewOrange,
                                                 contentColor = Color.White
                                             ) {
-                                                Text("$reviewCount")
+                                                Text("$reviewCount", fontSize = 9.sp)
                                             }
                                         }
                                     ) {
-                                        Icon(imageVector = screen.icon, contentDescription = label)
+                                        Icon(
+                                            imageVector = screen.icon,
+                                            contentDescription = label,
+                                            modifier = Modifier.size(20.dp)
+                                        )
                                     }
                                 } else {
-                                    Icon(imageVector = screen.icon, contentDescription = label)
+                                    Icon(
+                                        imageVector = screen.icon,
+                                        contentDescription = label,
+                                        modifier = Modifier.size(20.dp)
+                                    )
                                 }
                             },
-                            label = { Text(label) },
+                            label = {
+                                Text(
+                                    text = label,
+                                    style = MaterialTheme.typography.labelSmall.copy(
+                                        fontSize = 10.sp,
+                                        fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium,
+                                        letterSpacing = (-0.2).sp
+                                    ),
+                                    maxLines = 1,
+                                    softWrap = false,
+                                    overflow = TextOverflow.Ellipsis
+                                )
+                            },
                             colors = NavigationBarItemDefaults.colors(
                                 selectedIconColor = MaterialTheme.colorScheme.primary,
                                 selectedTextColor = MaterialTheme.colorScheme.primary,

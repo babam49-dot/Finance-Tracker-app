@@ -101,8 +101,6 @@ class SettingsViewModel @Inject constructor(
             is SettingsUiEvent.SetLanguage -> {
                 viewModelScope.launch {
                     settingsRepository.setLanguage(event.languageCode)
-                    val appLocale = LocaleListCompat.forLanguageTags(event.languageCode)
-                    AppCompatDelegate.setApplicationLocales(appLocale)
                 }
             }
             is SettingsUiEvent.SetEthiopianCalendar -> {

@@ -122,21 +122,21 @@ fun HomeScreen(
                 shape = RoundedCornerShape(999.dp),
                 containerColor = Color(0xFF0F5132),
                 contentColor = Color.White,
-                modifier = Modifier.padding(bottom = 8.dp)
+                modifier = Modifier.padding(bottom = 6.dp)
             ) {
                 Row(
-                    modifier = Modifier.padding(horizontal = 20.dp, vertical = 12.dp),
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Icon(
                         imageVector = Icons.Default.AccountBalanceWallet,
                         contentDescription = stringResource(R.string.btn_log_cash),
-                        modifier = Modifier.size(20.dp)
+                        modifier = Modifier.size(18.dp)
                     )
-                    Spacer(modifier = Modifier.width(8.dp))
+                    Spacer(modifier = Modifier.width(6.dp))
                     Text(
                         text = stringResource(R.string.btn_log_cash),
-                        style = MaterialTheme.typography.titleMedium,
+                        style = MaterialTheme.typography.titleSmall.copy(fontSize = 13.5.sp),
                         color = Color.White
                     )
                 }
@@ -148,8 +148,8 @@ fun HomeScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues),
-            contentPadding = PaddingValues(horizontal = 20.dp, vertical = 12.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 6.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             // 1. Demo Mode Banner
             if (overview.isSampleMode && !state.isSampleBannerDismissed) {
@@ -202,9 +202,13 @@ fun HomeScreen(
             item {
                 Text(
                     text = stringResource(R.string.tracked_accounts_title),
-                    style = MaterialTheme.typography.labelLarge,
+                    style = MaterialTheme.typography.labelSmall.copy(
+                        fontSize = 11.sp,
+                        fontWeight = FontWeight.Bold,
+                        letterSpacing = 0.8.sp
+                    ),
                     color = extendedColors.textLabel,
-                    modifier = Modifier.padding(top = 8.dp, bottom = 4.dp)
+                    modifier = Modifier.padding(top = 4.dp, bottom = 2.dp)
                 )
             }
 
@@ -237,14 +241,15 @@ fun HomeTopBar(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 20.dp, vertical = 16.dp),
+            .padding(horizontal = 16.dp, vertical = 10.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = stringResource(R.string.overview_title),
-                style = MaterialTheme.typography.displayLarge,
+                style = MaterialTheme.typography.titleLarge.copy(fontSize = 23.sp),
+                fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onBackground
             )
             Spacer(modifier = Modifier.height(2.dp))
@@ -254,7 +259,7 @@ fun HomeTopBar(
                 } else {
                     stringResource(R.string.overview_subtitle_demo)
                 },
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.bodySmall.copy(fontSize = 12.5.sp),
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
@@ -267,13 +272,13 @@ fun HomeTopBar(
                 IconButton(
                     onClick = onSyncNow,
                     modifier = Modifier
-                        .size(42.dp)
+                        .size(38.dp)
                         .background(MaterialTheme.colorScheme.surface, CircleShape)
                         .border(1.dp, extendedColors.cardBorder, CircleShape)
                 ) {
                     if (isSyncing) {
                         CircularProgressIndicator(
-                            modifier = Modifier.size(20.dp),
+                            modifier = Modifier.size(18.dp),
                             strokeWidth = 2.dp,
                             color = MaterialTheme.colorScheme.primary
                         )
@@ -282,7 +287,7 @@ fun HomeTopBar(
                             imageVector = Icons.Default.Sync,
                             contentDescription = "Sync",
                             tint = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.size(22.dp)
+                            modifier = Modifier.size(20.dp)
                         )
                     }
                 }
@@ -291,7 +296,7 @@ fun HomeTopBar(
             IconButton(
                 onClick = onToggleHideAmounts,
                 modifier = Modifier
-                    .size(42.dp)
+                    .size(38.dp)
                     .background(MaterialTheme.colorScheme.surface, CircleShape)
                     .border(1.dp, extendedColors.cardBorder, CircleShape)
             ) {
@@ -299,7 +304,7 @@ fun HomeTopBar(
                     imageVector = if (areAmountsHidden) Icons.Default.VisibilityOff else Icons.Default.Visibility,
                     contentDescription = "Toggle amount visibility",
                     tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.size(22.dp)
+                    modifier = Modifier.size(20.dp)
                 )
             }
         }
@@ -309,27 +314,27 @@ fun HomeTopBar(
 @Composable
 fun DemoBanner(onDismiss: () -> Unit) {
     Card(
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(14.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
         modifier = Modifier.fillMaxWidth()
     ) {
         Row(
-            modifier = Modifier.padding(14.dp),
+            modifier = Modifier.padding(12.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
                 text = stringResource(R.string.demo_banner_message),
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.bodySmall.copy(fontSize = 12.sp),
                 color = MaterialTheme.colorScheme.onPrimaryContainer,
                 modifier = Modifier.weight(1f)
             )
-            IconButton(onClick = onDismiss, modifier = Modifier.size(24.dp)) {
+            IconButton(onClick = onDismiss, modifier = Modifier.size(22.dp)) {
                 Icon(
                     imageVector = Icons.Default.Close,
                     contentDescription = "Dismiss",
                     tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                    modifier = Modifier.size(16.dp)
+                    modifier = Modifier.size(15.dp)
                 )
             }
         }
@@ -351,22 +356,26 @@ fun TotalTrackedMoneyCard(
         border = BorderStroke(1.dp, extendedColors.cardBorder),
         modifier = Modifier.fillMaxWidth()
     ) {
-        Column(modifier = Modifier.padding(20.dp)) {
+        Column(modifier = Modifier.padding(16.dp)) {
             Text(
                 text = stringResource(R.string.total_tracked_money),
-                style = MaterialTheme.typography.labelLarge,
+                style = MaterialTheme.typography.labelSmall.copy(
+                    fontSize = 11.sp,
+                    fontWeight = FontWeight.Bold,
+                    letterSpacing = 0.8.sp
+                ),
                 color = extendedColors.textLabel
             )
-            Spacer(modifier = Modifier.height(6.dp))
+            Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = MoneyFormatter.formatSantim(totalTrackedMinor, masked = masked),
-                style = MaterialTheme.typography.headlineLarge.copy(fontSize = 32.sp),
+                style = MaterialTheme.typography.headlineLarge.copy(fontSize = 25.sp),
                 color = MaterialTheme.colorScheme.primary,
                 fontWeight = FontWeight.Bold
             )
-            Spacer(modifier = Modifier.height(14.dp))
+            Spacer(modifier = Modifier.height(10.dp))
             HorizontalDivider(color = extendedColors.divider, thickness = 1.dp)
-            Spacer(modifier = Modifier.height(14.dp))
+            Spacer(modifier = Modifier.height(10.dp))
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -375,13 +384,13 @@ fun TotalTrackedMoneyCard(
                 Column {
                     Text(
                         text = stringResource(R.string.digital_balance_label),
-                        style = MaterialTheme.typography.bodyMedium,
+                        style = MaterialTheme.typography.bodySmall.copy(fontSize = 12.sp),
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     Spacer(modifier = Modifier.height(2.dp))
                     Text(
                         text = MoneyFormatter.formatSantim(digitalBalanceMinor, masked = masked),
-                        style = MaterialTheme.typography.titleMedium,
+                        style = MaterialTheme.typography.titleMedium.copy(fontSize = 15.sp),
                         fontWeight = FontWeight.SemiBold,
                         color = MaterialTheme.colorScheme.onSurface
                     )
@@ -390,13 +399,13 @@ fun TotalTrackedMoneyCard(
                 Column(horizontalAlignment = Alignment.End) {
                     Text(
                         text = stringResource(R.string.physical_cash_label),
-                        style = MaterialTheme.typography.bodyMedium,
+                        style = MaterialTheme.typography.bodySmall.copy(fontSize = 12.sp),
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     Spacer(modifier = Modifier.height(2.dp))
                     Text(
                         text = MoneyFormatter.formatSantim(cashBalanceMinor, masked = masked),
-                        style = MaterialTheme.typography.titleMedium,
+                        style = MaterialTheme.typography.titleMedium.copy(fontSize = 15.sp),
                         fontWeight = FontWeight.SemiBold,
                         color = extendedColors.cashGold
                     )
@@ -422,12 +431,12 @@ fun ReviewBanner(
             .clickable(onClick = onClick)
     ) {
         Row(
-            modifier = Modifier.padding(16.dp),
+            modifier = Modifier.padding(12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Box(
                 modifier = Modifier
-                    .size(40.dp)
+                    .size(36.dp)
                     .background(extendedColors.reviewOrange.copy(alpha = 0.15f), CircleShape),
                 contentAlignment = Alignment.Center
             ) {
@@ -435,23 +444,23 @@ fun ReviewBanner(
                     imageVector = Icons.Outlined.AssignmentLate,
                     contentDescription = null,
                     tint = extendedColors.reviewOrange,
-                    modifier = Modifier.size(22.dp)
+                    modifier = Modifier.size(20.dp)
                 )
             }
 
-            Spacer(modifier = Modifier.width(12.dp))
+            Spacer(modifier = Modifier.width(10.dp))
 
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = pluralStringResource(R.plurals.review_banner_title, pendingCount, pendingCount),
-                    style = MaterialTheme.typography.titleMedium,
+                    style = MaterialTheme.typography.titleMedium.copy(fontSize = 14.sp),
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onSurface
                 )
                 Spacer(modifier = Modifier.height(2.dp))
                 Text(
                     text = stringResource(R.string.review_banner_subtitle),
-                    style = MaterialTheme.typography.bodyMedium,
+                    style = MaterialTheme.typography.bodySmall.copy(fontSize = 12.sp),
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
@@ -459,7 +468,8 @@ fun ReviewBanner(
             Icon(
                 imageVector = Icons.Default.ChevronRight,
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.onSurfaceVariant
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.size(20.dp)
             )
         }
     }
@@ -480,13 +490,17 @@ fun CashFlowCard(
         border = BorderStroke(1.dp, extendedColors.cardBorder),
         modifier = Modifier.fillMaxWidth()
     ) {
-        Column(modifier = Modifier.padding(20.dp)) {
+        Column(modifier = Modifier.padding(14.dp)) {
             Text(
                 text = stringResource(R.string.cash_flow_title),
-                style = MaterialTheme.typography.labelLarge,
+                style = MaterialTheme.typography.labelSmall.copy(
+                    fontSize = 11.sp,
+                    fontWeight = FontWeight.Bold,
+                    letterSpacing = 0.8.sp
+                ),
                 color = extendedColors.textLabel
             )
-            Spacer(modifier = Modifier.height(14.dp))
+            Spacer(modifier = Modifier.height(10.dp))
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -497,20 +511,20 @@ fun CashFlowCard(
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Box(
                             modifier = Modifier
-                                .size(8.dp)
+                                .size(7.dp)
                                 .background(extendedColors.incomeGreen, CircleShape)
                         )
-                        Spacer(modifier = Modifier.width(6.dp))
+                        Spacer(modifier = Modifier.width(5.dp))
                         Text(
                             text = stringResource(R.string.cash_flow_income),
-                            style = MaterialTheme.typography.bodyMedium,
+                            style = MaterialTheme.typography.bodySmall.copy(fontSize = 12.sp),
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
-                    Spacer(modifier = Modifier.height(4.dp))
+                    Spacer(modifier = Modifier.height(3.dp))
                     Text(
                         text = MoneyFormatter.formatSantim(incomeMinor, includeSign = true, masked = masked),
-                        style = MaterialTheme.typography.titleMedium,
+                        style = MaterialTheme.typography.titleMedium.copy(fontSize = 14.5.sp),
                         fontWeight = FontWeight.Bold,
                         color = extendedColors.incomeGreen
                     )
@@ -521,20 +535,20 @@ fun CashFlowCard(
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Box(
                             modifier = Modifier
-                                .size(8.dp)
+                                .size(7.dp)
                                 .background(extendedColors.expenseRed, CircleShape)
                         )
-                        Spacer(modifier = Modifier.width(6.dp))
+                        Spacer(modifier = Modifier.width(5.dp))
                         Text(
                             text = stringResource(R.string.cash_flow_expense),
-                            style = MaterialTheme.typography.bodyMedium,
+                            style = MaterialTheme.typography.bodySmall.copy(fontSize = 12.sp),
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
-                    Spacer(modifier = Modifier.height(4.dp))
+                    Spacer(modifier = Modifier.height(3.dp))
                     Text(
                         text = MoneyFormatter.formatSantim(-expenseMinor, masked = masked),
-                        style = MaterialTheme.typography.titleMedium,
+                        style = MaterialTheme.typography.titleMedium.copy(fontSize = 14.5.sp),
                         fontWeight = FontWeight.Bold,
                         color = extendedColors.expenseRed
                     )
@@ -544,27 +558,27 @@ fun CashFlowCard(
                 Column(horizontalAlignment = Alignment.End) {
                     Text(
                         text = stringResource(R.string.cash_flow_net),
-                        style = MaterialTheme.typography.bodyMedium,
+                        style = MaterialTheme.typography.bodySmall.copy(fontSize = 12.sp),
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
-                    Spacer(modifier = Modifier.height(4.dp))
+                    Spacer(modifier = Modifier.height(3.dp))
                     val netColor = if (netFlowMinor >= 0) extendedColors.incomeGreen else extendedColors.expenseRed
                     Text(
                         text = MoneyFormatter.formatSantim(netFlowMinor, includeSign = true, masked = masked),
-                        style = MaterialTheme.typography.titleMedium,
+                        style = MaterialTheme.typography.titleMedium.copy(fontSize = 14.5.sp),
                         fontWeight = FontWeight.Bold,
                         color = netColor
                     )
                 }
             }
 
-            Spacer(modifier = Modifier.height(14.dp))
-            HorizontalDivider(color = extendedColors.divider, thickness = 1.dp)
             Spacer(modifier = Modifier.height(10.dp))
+            HorizontalDivider(color = extendedColors.divider, thickness = 1.dp)
+            Spacer(modifier = Modifier.height(8.dp))
 
             Text(
                 text = stringResource(R.string.cash_flow_footnote),
-                style = MaterialTheme.typography.bodySmall.copy(fontStyle = FontStyle.Italic, fontSize = 11.sp),
+                style = MaterialTheme.typography.bodySmall.copy(fontStyle = FontStyle.Italic, fontSize = 10.5.sp),
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
@@ -634,12 +648,12 @@ fun AccountCard(
             .clickable(onClick = onClick)
     ) {
         Row(
-            modifier = Modifier.padding(16.dp),
+            modifier = Modifier.padding(12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Box(
                 modifier = Modifier
-                    .size(44.dp)
+                    .size(38.dp)
                     .background(iconBg, CircleShape),
                 contentAlignment = Alignment.Center
             ) {
@@ -647,16 +661,16 @@ fun AccountCard(
                     imageVector = icon,
                     contentDescription = null,
                     tint = iconTint,
-                    modifier = Modifier.size(24.dp)
+                    modifier = Modifier.size(20.dp)
                 )
             }
 
-            Spacer(modifier = Modifier.width(14.dp))
+            Spacer(modifier = Modifier.width(12.dp))
 
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = account.displayName,
-                    style = MaterialTheme.typography.titleMedium,
+                    style = MaterialTheme.typography.titleMedium.copy(fontSize = 14.sp),
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onSurface
                 )
@@ -664,27 +678,27 @@ fun AccountCard(
                 if (account.currentBalanceMinor != null) {
                     Text(
                         text = account.maskedNumber,
-                        style = MaterialTheme.typography.bodyMedium,
+                        style = MaterialTheme.typography.bodyMedium.copy(fontSize = 12.sp),
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     if (account.balanceUpdatedAt != null) {
                         Spacer(modifier = Modifier.height(2.dp))
                         Text(
                             text = stringResource(R.string.updated_ago, DateUtils.formatRelativeTime(account.balanceUpdatedAt)),
-                            style = MaterialTheme.typography.labelSmall.copy(fontSize = 11.sp),
+                            style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.5.sp),
                             color = extendedColors.textLabel
                         )
                     }
                 } else {
                     Text(
                         text = account.maskedNumber,
-                        style = MaterialTheme.typography.bodyMedium,
+                        style = MaterialTheme.typography.bodyMedium.copy(fontSize = 12.sp),
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     Spacer(modifier = Modifier.height(2.dp))
                     Text(
                         text = stringResource(R.string.balance_unavailable),
-                        style = MaterialTheme.typography.labelSmall.copy(fontSize = 11.sp),
+                        style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.5.sp),
                         color = extendedColors.textLabel
                     )
                 }
@@ -694,7 +708,7 @@ fun AccountCard(
                 if (account.currentBalanceMinor != null) {
                     Text(
                         text = MoneyFormatter.formatSantim(account.currentBalanceMinor, masked = masked),
-                        style = MaterialTheme.typography.titleMedium,
+                        style = MaterialTheme.typography.titleMedium.copy(fontSize = 15.sp),
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onSurface
                     )
@@ -703,6 +717,7 @@ fun AccountCard(
                         Text(
                             text = stringResource(R.string.tag_sample),
                             style = MaterialTheme.typography.labelSmall.copy(
+                                fontSize = 10.sp,
                                 fontWeight = FontWeight.Bold,
                                 letterSpacing = 0.8.sp
                             ),
@@ -712,7 +727,7 @@ fun AccountCard(
                 } else {
                     Text(
                         text = "Unavailable",
-                        style = MaterialTheme.typography.bodyMedium,
+                        style = MaterialTheme.typography.bodyMedium.copy(fontSize = 13.sp),
                         fontWeight = FontWeight.SemiBold,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )

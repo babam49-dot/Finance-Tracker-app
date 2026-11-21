@@ -30,6 +30,7 @@ import androidx.compose.material.icons.filled.PhoneAndroid
 import androidx.compose.material.icons.filled.Restaurant
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material.icons.filled.SwapHoriz
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -271,14 +272,27 @@ fun TransactionRow(
     onClick: () -> Unit
 ) {
     val extendedColors = LocalExtendedColors.current
-    val isIncome = transaction.type.name.contains("IN")
-    val amountColor = if (isIncome) extendedColors.incomeGreen else extendedColors.expenseRed
-    val amountSign = if (isIncome) "+" else "-"
+    val isTransfer = transaction.type.name.contains("TRANSFER") || transaction.isExcludedFromReports
+    val isIncome = transaction.type.name.contains("IN") && !isTransfer
+    val amountColor = when {
+        isTransfer -> MaterialTheme.colorScheme.onSurface
+        isIncome -> extendedColors.incomeGreen
+        else -> extendedColors.expenseRed
+    }
+    val amountSign = when {
+        isTransfer -> "⇄ "
+        isIncome -> "+"
+        else -> "-"
+    }
 
-    val categoryColor = try {
-        Color(android.graphics.Color.parseColor(transaction.categoryColorHex ?: "#9CA3AF"))
-    } catch (e: Exception) {
-        Color.Gray
+    val categoryColor = if (isTransfer) {
+        Color(0xFF2563EB)
+    } else {
+        try {
+            Color(android.graphics.Color.parseColor(transaction.categoryColorHex ?: "#9CA3AF"))
+        } catch (e: Exception) {
+            Color.Gray
+        }
     }
 
     Card(
@@ -302,6 +316,7 @@ fun TransactionRow(
             ) {
                 Icon(
                     imageVector = when {
+                        isTransfer -> Icons.Default.SwapHoriz
                         transaction.categoryName?.contains("Transport", ignoreCase = true) == true -> Icons.Default.DirectionsCar
                         transaction.categoryName?.contains("Food", ignoreCase = true) == true -> Icons.Default.Restaurant
                         transaction.categoryName?.contains("Groceries", ignoreCase = true) == true -> Icons.Default.ShoppingCart
