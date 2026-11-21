@@ -74,8 +74,7 @@ fun AppNavigation(
             if (isBottomBarVisible) {
                 NavigationBar(
                     containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    tonalElevation = 0.dp,
-                    modifier = Modifier.height(60.dp)
+                    tonalElevation = 0.dp
                 ) {
                     bottomNavScreens.forEach { screen ->
                         val selected = currentRoute == screen.route
@@ -115,14 +114,14 @@ fun AppNavigation(
                                         Icon(
                                             imageVector = screen.icon,
                                             contentDescription = label,
-                                            modifier = Modifier.size(20.dp)
+                                            modifier = Modifier.size(22.dp)
                                         )
                                     }
                                 } else {
                                     Icon(
                                         imageVector = screen.icon,
                                         contentDescription = label,
-                                        modifier = Modifier.size(20.dp)
+                                        modifier = Modifier.size(22.dp)
                                     )
                                 }
                             },
@@ -130,7 +129,7 @@ fun AppNavigation(
                                 Text(
                                     text = label,
                                     style = MaterialTheme.typography.labelSmall.copy(
-                                        fontSize = 10.sp,
+                                        fontSize = 10.5.sp,
                                         fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium,
                                         letterSpacing = (-0.2).sp
                                     ),
