@@ -39,8 +39,11 @@ interface AccountDao {
     @Query("UPDATE accounts SET currentBalanceMinor = :balanceMinor, balanceUpdatedAt = :updatedAt WHERE id = :id")
     suspend fun updateBalance(id: Long, balanceMinor: Long, updatedAt: Long)
 
-    @Query("DELETE FROM accounts WHERE isSample = 1 OR maskedNumber = '1********8018'")
+    @Query("DELETE FROM accounts WHERE isSample = 1 OR maskedNumber LIKE '%8018%' OR displayName LIKE '%8018%'")
     suspend fun deleteSampleAccounts()
+
+    @Query("DELETE FROM accounts WHERE isSample = 1 OR maskedNumber LIKE '%8018%' OR displayName LIKE '%8018%'")
+    suspend fun purgeSampleAndFakeAccounts()
 
     @Query("DELETE FROM accounts")
     suspend fun deleteAll()

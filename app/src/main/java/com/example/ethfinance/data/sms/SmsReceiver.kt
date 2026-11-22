@@ -87,20 +87,24 @@ class SmsReceiver : BroadcastReceiver() {
             else -> AccountType.BANK_OTHER
         }
 
-        var account = if (!parsed.accountHint.isNullOrBlank()) {
-            accountDao.getAccountByTypeAndMask(accountType, parsed.accountHint)
-        } else {
-            accountDao.getFirstRealAccountByType(accountType)
-        }
+        var account = accountDao.getFirstRealAccountByType(accountType)
 
         if (account == null) {
-            val name = "${accountType.name.replace("BANK_", "")} Account ${parsed.accountHint ?: ""}".trim()
+            val name = when (accountType) {
+                AccountType.BANK_CBE -> "CBE Account ${parsed.accountHint ?: "1********3667"}".trim()
+                AccountType.TELEBIRR -> "Telebirr Wallet"
+                else -> "${accountType.name.replace("BANK_", "")} Account"
+            }
+            val mask = when (accountType) {
+                AccountType.BANK_CBE -> if (parsed.accountHint?.contains("3667") == true) parsed.accountHint else "1********3667"
+                else -> parsed.accountHint ?: "****"
+            }
             val newAccountId = accountDao.insertAccount(
                 AccountEntity(
                     type = accountType,
                     displayName = name,
                     institutionName = name,
-                    maskedNumber = parsed.accountHint ?: "****",
+                    maskedNumber = mask,
                     senderIds = listOf(sender),
                     currentBalanceMinor = parsed.balanceAfterMinor,
                     balanceUpdatedAt = timestamp,
@@ -108,20 +112,25 @@ class SmsReceiver : BroadcastReceiver() {
                 )
             )
             account = accountDao.getAccountById(newAccountId)
-        } else if (parsed.balanceAfterMinor != null) {
-            val lastUpdated = account.balanceUpdatedAt ?: 0L
-            if (timestamp >= lastUpdated) {
-                accountDao.updateBalance(account.id, parsed.balanceAfterMinor, timestamp)
+        } else {
+            if (accountType == AccountType.BANK_CBE && parsed.accountHint?.contains("3667") == true) {
+                accountDao.updateAccount(account.copy(maskedNumber = parsed.accountHint, displayName = "CBE Account ${parsed.accountHint}"))
             }
-        } else if (account.currentBalanceMinor != null) {
-            val lastUpdated = account.balanceUpdatedAt ?: 0L
-            if (timestamp >= lastUpdated) {
-                val newBal = if (parsed.direction == TransactionType.EXPENSE) {
-                    account.currentBalanceMinor - parsed.amountMinor
-                } else {
-                    account.currentBalanceMinor + parsed.amountMinor
+            if (parsed.balanceAfterMinor != null) {
+                val lastUpdated = account.balanceUpdatedAt ?: 0L
+                if (timestamp >= lastUpdated) {
+                    accountDao.updateBalance(account.id, parsed.balanceAfterMinor, timestamp)
                 }
-                accountDao.updateBalance(account.id, newBal, timestamp)
+            } else if (account.currentBalanceMinor != null) {
+                val lastUpdated = account.balanceUpdatedAt ?: 0L
+                if (timestamp >= lastUpdated) {
+                    val newBal = if (parsed.direction == TransactionType.EXPENSE) {
+                        account.currentBalanceMinor - parsed.amountMinor
+                    } else {
+                        account.currentBalanceMinor + parsed.amountMinor
+                    }
+                    accountDao.updateBalance(account.id, newBal, timestamp)
+                }
             }
         }
 

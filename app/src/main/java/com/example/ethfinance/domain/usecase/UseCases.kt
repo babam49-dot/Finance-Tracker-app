@@ -42,7 +42,7 @@ class GetOverviewUseCase @Inject constructor(
                 reportRepository.getCashFlowSummary(monthRange.startEpochMillis, monthRange.endEpochMillis, isSample = isSample)
             ) { reviewCount, cashFlowSummary ->
                 val activeAccounts = accounts.filter { acc ->
-                    if (isSample) acc.isSample else (!acc.isSample && acc.maskedNumber != "1********8018")
+                    if (isSample) acc.isSample else (!acc.isSample && !acc.maskedNumber.contains("8018") && !acc.displayName.contains("8018"))
                 }
 
                 var digitalMinor = 0L
