@@ -55,9 +55,8 @@ class SmsReceiver : BroadcastReceiver() {
         if (messages.isNullOrEmpty()) return
 
         val sender = messages[0].displayOriginatingAddress ?: return
-        if (!senderRegistry.isTrackedSender(sender)) return
-
         val fullBody = messages.joinToString("") { it.displayMessageBody ?: "" }
+        if (!senderRegistry.isTrackedSender(sender, fullBody)) return
         val timestamp = messages[0].timestampMillis
 
         val pendingResult = goAsync()
@@ -113,6 +112,16 @@ class SmsReceiver : BroadcastReceiver() {
             val lastUpdated = account.balanceUpdatedAt ?: 0L
             if (timestamp >= lastUpdated) {
                 accountDao.updateBalance(account.id, parsed.balanceAfterMinor, timestamp)
+            }
+        } else if (account.currentBalanceMinor != null) {
+            val lastUpdated = account.balanceUpdatedAt ?: 0L
+            if (timestamp >= lastUpdated) {
+                val newBal = if (parsed.direction == TransactionType.EXPENSE) {
+                    account.currentBalanceMinor - parsed.amountMinor
+                } else {
+                    account.currentBalanceMinor + parsed.amountMinor
+                }
+                accountDao.updateBalance(account.id, newBal, timestamp)
             }
         }
 

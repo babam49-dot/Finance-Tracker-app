@@ -28,7 +28,9 @@ class TelebirrParser : BankParser {
 
     override fun canParse(sender: String, body: String): Boolean {
         val s = sender.trim().lowercase()
-        return s == "127" || s == "telebirr" || s.contains("telebirr") || s.contains("127")
+        return s == "127" || s == "telebirr" || s.contains("telebirr") || s.contains("127") ||
+               body.contains("telebirr", ignoreCase = true) ||
+               body.contains("ቴሌብር", ignoreCase = true)
     }
 
     override fun parse(sender: String, body: String, receivedAt: Long): ParsedSms? {

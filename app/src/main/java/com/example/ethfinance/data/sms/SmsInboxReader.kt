@@ -54,9 +54,8 @@ class SmsInboxReader @Inject constructor(
 
                 while (it.moveToNext()) {
                     val sender = it.getString(addressIdx) ?: continue
-                    if (!senderRegistry.isTrackedSender(sender)) continue
-
                     val body = it.getString(bodyIdx) ?: continue
+                    if (!senderRegistry.isTrackedSender(sender, body)) continue
                     val timestamp = it.getLong(dateIdx)
 
                     val processed = processSingleSms(sender, body, timestamp)
@@ -123,6 +122,16 @@ class SmsInboxReader @Inject constructor(
             val lastUpdated = account.balanceUpdatedAt ?: 0L
             if (timestamp >= lastUpdated) {
                 accountDao.updateBalance(account.id, parsed.balanceAfterMinor, timestamp)
+            }
+        } else if (account.currentBalanceMinor != null) {
+            val lastUpdated = account.balanceUpdatedAt ?: 0L
+            if (timestamp >= lastUpdated) {
+                val newBal = if (parsed.direction == TransactionType.EXPENSE) {
+                    account.currentBalanceMinor - parsed.amountMinor
+                } else {
+                    account.currentBalanceMinor + parsed.amountMinor
+                }
+                accountDao.updateBalance(account.id, newBal, timestamp)
             }
         }
 

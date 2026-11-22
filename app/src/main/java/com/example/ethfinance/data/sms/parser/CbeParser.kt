@@ -25,7 +25,10 @@ class CbeParser : BankParser {
 
     override fun canParse(sender: String, body: String): Boolean {
         val s = sender.trim().lowercase()
-        return s == "cbe" || s == "cbebirr" || s == "cbe-birr" || s.contains("cbe")
+        return s == "cbe" || s == "cbebirr" || s == "cbe-birr" || s.contains("cbe") || s == "808" || s == "809" ||
+               body.contains("cbe", ignoreCase = true) ||
+               body.contains("commercial bank", ignoreCase = true) ||
+               body.contains("የኢትዮጵያ ንግድ ባንክ", ignoreCase = true)
     }
 
     override fun parse(sender: String, body: String, receivedAt: Long): ParsedSms? {
